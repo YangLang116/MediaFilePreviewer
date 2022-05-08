@@ -29,7 +29,8 @@ intellij {
     pluginName.set(properties("pluginName"))
     version.set(properties("platformVersion"))
     type.set(properties("platformType"))
-
+    downloadSources.set(properties("platformDownloadSources").toBoolean())
+    updateSinceUntilBuild.set(false)
     // Plugin Dependencies. Uses `platformPlugins` property from the gradle.properties file.
     plugins.set(properties("platformPlugins").split(',').map(String::trim).filter(String::isNotEmpty))
 }
@@ -37,7 +38,12 @@ intellij {
 // Configure Gradle Changelog Plugin - read more: https://github.com/JetBrains/gradle-changelog-plugin
 changelog {
     version.set(properties("pluginVersion"))
-    groups.set(emptyList())
+    path.set("${project.projectDir}/CHANGELOG.md")
+    header.set(provider { "[${version.get()}] - ${org.jetbrains.changelog.date()}" })
+    itemPrefix.set("-")
+    keepUnreleasedSection.set(true)
+    unreleasedTerm.set("[Coming]")
+    groups.set(listOf("Changed"))
 }
 
 // Configure Gradle Qodana Plugin - read more: https://github.com/JetBrains/gradle-qodana-plugin
@@ -66,9 +72,6 @@ tasks {
 
     patchPluginXml {
         version.set(properties("pluginVersion"))
-        sinceBuild.set(properties("pluginSinceBuild"))
-        untilBuild.set(properties("pluginUntilBuild"))
-
         // Extract the <!-- Plugin description --> section from README.md and provide for the plugin's manifest
         pluginDescription.set(
             projectDir.resolve("README.md").readText().lines().run {
@@ -112,5 +115,17 @@ tasks {
         // Specify pre-release label to publish the plugin in a custom Release Channel automatically. Read more:
         // https://plugins.jetbrains.com/docs/intellij/deployment.html#specifying-a-release-channel
         channels.set(listOf(properties("pluginVersion").split('-').getOrElse(1) { "default" }.split('.').first()))
+    }
+
+    runIde {
+        jbrVersion.set("11_0_10b1145.115")
+        ideDir.set(file("/Applications/Android Studio.app/Contents"))
+    }
+}
+
+tasks.findByName("buildPlugin")?.doLast {
+    copy {
+        from("build/distributions/MediaFilePreviewer-${version}.zip")
+        into("plugin-version/")
     }
 }
