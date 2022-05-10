@@ -6,4 +6,14 @@
 
     <idea-version since-build="211"/>
     <depends>com.intellij.modules.platform</depends>
+
+    <extensions defaultExtensionNs="com.intellij">
+        <fileType name="svga file"
+                  implementationClass="com.xtu.plugin.previewer.svga.SvgaFileType"
+                  fieldName="INSTANCE"
+                  language="svga"
+                  extensions="svga"/>
+        <fileEditorProvider implementation="com.xtu.plugin.previewer.svga.SvgaFileEditorProvider"/>
+    </extensions>
+
 </idea-plugin>
