@@ -6,6 +6,7 @@
 
     <idea-version since-build="211"/>
     <depends>com.intellij.modules.platform</depends>
+    <depends>com.intellij.javafx</depends>
 
     <extensions defaultExtensionNs="com.intellij">
         <fileType name="svga file"
