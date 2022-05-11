@@ -27,7 +27,7 @@ public class SvgaFileType extends LanguageFileType {
     @Override
     @NotNull
     public String getDescription() {
-        return "Svga Animation File";
+        return "Svga animation file";
     }
 
     @Override

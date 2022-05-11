@@ -7,6 +7,7 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.UserDataHolderBase;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.ui.jcef.JBCefBrowser;
+import com.xtu.plugin.previewer.svga.generator.SvgaHtmlGenerator;
 import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -20,11 +21,9 @@ public class SvgaFileEditor extends UserDataHolderBase implements FileEditor {
 
     private static final String NAME = "SVGA File Editor";
 
-    private final Project project;
     private final VirtualFile virtualFile;
 
     public SvgaFileEditor(@NotNull Project project, @NotNull VirtualFile file) {
-        this.project = project;
         this.virtualFile = file;
     }
 
@@ -32,10 +31,9 @@ public class SvgaFileEditor extends UserDataHolderBase implements FileEditor {
     @NotNull
     public JComponent getComponent() {
         JPanel rootPanel = new JPanel(new BorderLayout());
-        //create jcef
         JBCefBrowser browser = new JBCefBrowser();
-        browser.loadURL("https://www.baidu.com");
         rootPanel.add(browser.getComponent(), BorderLayout.CENTER);
+        SvgaHtmlGenerator.generate(this.virtualFile, browser::loadHTML);
         return rootPanel;
     }
 

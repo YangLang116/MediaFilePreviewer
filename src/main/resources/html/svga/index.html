@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>SVGA-PREVIEW</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <style>{style_placeholder}</style>
+    <script>{script_placeholder}</script>
+</head>
+<body onload="onPageLoad()">
+<div id="root">
+    <div id="canvas"></div>
+    <div id="canvas-background">
+        <div id="canvas-background-tip">Select Background Color</div>
+        <div id="canvas-background-list">
+            <div class="canvas-background-list-item" id="color-black" onclick="switchColor(this)"></div>
+            <div class="canvas-background-list-item" id="color-white" onclick="switchColor(this)"></div>
+            <div class="canvas-background-list-item" id="color-blue" onclick="switchColor(this)"></div>
+            <div class="canvas-background-list-item" id="color-green" onclick="switchColor(this)"></div>
+            <div class="canvas-background-list-item" id="color-yellow" onclick="switchColor(this)"></div>
+            <div class="canvas-background-list-item" id="color-red" onclick="switchColor(this)"></div>
+        </div>
+    </div>
+    <div id="info">
+        <div id="canvas-info">
+            <div id="canvas-info-tip">File Info</div>
+            <ul id="canvas-info-list">
+                <li class="canvas-info-list-item" id="version_info">Version: -</li>
+                <li class="canvas-info-list-item" id="fps_info">FPS: -</li>
+                <li class="canvas-info-list-item" id="frame_info">Frames: -</li>
+                <li class="canvas-info-list-item" id="size_info">Size: -</li>
+                <li class="canvas-info-list-item" id="memory_info">Memory: -</li>
+            </ul>
+        </div>
+        <div id="image-info">
+            <div id="image-info-tip">Images Info</div>
+            <ul id="image-info-list"></ul>
+        </div>
+    </div>
+</div>
+</body>
+</html>
