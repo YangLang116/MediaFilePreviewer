@@ -77,3 +77,19 @@ function switchColor(target) {
     let canvasStyle = document.getElementById('canvas').style
     canvasStyle.backgroundColor = getComputedStyle(target, null).backgroundColor
 }
+
+let currentZoom = 1;
+
+function zoomIn() {
+    let bodyStyle = document.getElementById('root').style
+    currentZoom -= 0.1
+    if (currentZoom <= 0) currentZoom = 0.1
+    bodyStyle.zoom = currentZoom.toString()
+}
+
+function zoomOut() {
+    let bodyStyle = document.getElementById('root').style
+    currentZoom += 0.1
+    if (currentZoom > 3) currentZoom = 3
+    bodyStyle.zoom = currentZoom.toString()
+}
