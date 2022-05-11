@@ -35,7 +35,6 @@ public class SvgaHtmlGenerator {
                     .replace("{script_placeholder}",
                             jsZipMinContent + " " + jsZipUtilsContent + " " + jsSvgaContent + " " + jsContent)
                     .replace("{file_content_placeholder}", svgaContent);
-            System.out.println(result);
             ApplicationManager.getApplication().invokeLater(() -> listener.onResult(result));
         } catch (Exception e) {
             e.printStackTrace();
