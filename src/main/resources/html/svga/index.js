@@ -11,9 +11,19 @@ function onPageLoad() {
 
 function resizeCanvas(videoItem) {
     let videoSize = videoItem.videoSize
+    let size = getFitSize(videoSize.width, videoSize.height)
     let canvasStyle = document.getElementById('canvas').style
-    canvasStyle.width = videoSize.width.toString().concat('px')
-    canvasStyle.height = videoSize.height.toString().concat('px')
+    canvasStyle.width = size[0].toString().concat('px')
+    canvasStyle.height = size[1].toString().concat('px')
+}
+
+const MAX_SIZE = 400
+
+function getFitSize(width, height) {
+    if (width < MAX_SIZE && height < MAX_SIZE) return [width, height];
+    if (height === 0) return [0, 0];
+    let rate = width / height;
+    return width > height ? [MAX_SIZE, MAX_SIZE / rate] : [MAX_SIZE * rate, MAX_SIZE];
 }
 
 function fillCanvasInfo(videoItem) {

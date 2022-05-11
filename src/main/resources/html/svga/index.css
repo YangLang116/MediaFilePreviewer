@@ -16,7 +16,7 @@ body {
     background-color: #3498DB;
     border-radius: 5px;
     text-align: center;
-    font-size: 20px;
+    font-size: 16px;
     font-weight: bold;
     line-height: 30px;
     color: white;
@@ -53,7 +53,7 @@ body {
 
 #canvas-background-tip, #canvas-info-tip, #image-info-tip {
     color: blue;
-    font-size: 18px;
+    font-size: 16px;
     font-weight: bold;
 }
 
