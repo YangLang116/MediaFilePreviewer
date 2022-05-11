@@ -10,7 +10,7 @@ import org.jetbrains.annotations.NotNull;
 public class SvgaFileEditor extends BaseFileEditor {
 
     public SvgaFileEditor(@NotNull Project project, @NotNull VirtualFile file) {
-        super("SVGA File Editor", project, file);
+        super("SVGA Editor", project, file);
         SvgaHtmlGenerator.generate(file, this::loadHtml);
     }
 }

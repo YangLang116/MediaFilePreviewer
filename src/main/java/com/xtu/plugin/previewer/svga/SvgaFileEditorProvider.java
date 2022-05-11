@@ -27,7 +27,7 @@ public class SvgaFileEditorProvider implements FileEditorProvider, DumbAware {
     @NotNull
     @NonNls
     public String getEditorTypeId() {
-        return "svga-preview-editor";
+        return "SVGA Editor";
     }
 
     @Override

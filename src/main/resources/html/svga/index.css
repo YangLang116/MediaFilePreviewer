@@ -11,14 +11,14 @@ body {
 }
 
 #control_zoom_in, #control_zoom_out {
-    width: 40px;
-    height: 40px;
+    width: 30px;
+    height: 30px;
     background-color: #3498DB;
     border-radius: 5px;
     text-align: center;
     font-size: 20px;
     font-weight: bold;
-    line-height: 40px;
+    line-height: 30px;
     color: white;
     margin-top: 20px;
     user-select: none;

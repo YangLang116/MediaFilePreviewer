@@ -9,12 +9,20 @@
     <depends>com.intellij.javafx</depends>
 
     <extensions defaultExtensionNs="com.intellij">
+        <!--svga-->
         <fileType name="svga file"
                   implementationClass="com.xtu.plugin.previewer.svga.SvgaFileType"
                   fieldName="INSTANCE"
                   language="svga"
                   extensions="svga"/>
         <fileEditorProvider implementation="com.xtu.plugin.previewer.svga.SvgaFileEditorProvider"/>
+        <!--lottie-->
+        <fileType name="lottie file"
+                  implementationClass="com.xtu.plugin.previewer.lottie.LottieFileType"
+                  fieldName="INSTANCE"
+                  language="lottie"
+                  extensions="json"/>
+        <fileEditorProvider implementation="com.xtu.plugin.previewer.lottie.LottieFileEditorProvider"/>
     </extensions>
 
 </idea-plugin>
