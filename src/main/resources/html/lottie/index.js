@@ -5,7 +5,7 @@ function onPageLoad() {
     animation = bodymovin.loadAnimation({
         container: document.getElementById('canvas'),
         animationData: animationData,
-        renderer: 'canvas',
+        renderer: 'svg',
         loop: true,
         autoplay: true,
     })

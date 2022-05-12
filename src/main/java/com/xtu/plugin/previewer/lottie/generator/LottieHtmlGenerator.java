@@ -30,7 +30,7 @@ public class LottieHtmlGenerator {
             Pair<Integer, Integer> fitSize = DisplayUtils.getFitSize(width, height);
             String htmlContent = FileUtils.readTextFromResource("/html/lottie/index.html");
             String cssContent = FileUtils.readTextFromResource("/html/lottie/index.css");
-            String lottieJsContent = FileUtils.readTextFromResource("/html/lottie/libs/lottie_canvas.min.js");
+            String lottieJsContent = FileUtils.readTextFromResource("/html/lottie/libs/lottie_light.min.js");
             String jsContent = FileUtils.readTextFromResource("/html/lottie/index.js");
             //拼装html内容
             String result = htmlContent.replace("{style_placeholder}", cssContent)

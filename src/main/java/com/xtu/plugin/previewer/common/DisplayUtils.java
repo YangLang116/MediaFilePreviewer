@@ -4,7 +4,7 @@ import kotlin.Pair;
 
 public class DisplayUtils {
 
-    private static final int MAX_SIZE = 400;
+    private static final int MAX_SIZE = 320;
 
     public static Pair<Integer, Integer> getFitSize(int width, int height) {
         if (width < MAX_SIZE && height < MAX_SIZE) return new Pair<>(width, height);

@@ -17,7 +17,7 @@ function resizeCanvas(videoItem) {
     canvasStyle.height = size[1].toString().concat('px')
 }
 
-const MAX_SIZE = 400
+const MAX_SIZE = 320
 
 function getFitSize(width, height) {
     if (width < MAX_SIZE && height < MAX_SIZE) return [width, height];
