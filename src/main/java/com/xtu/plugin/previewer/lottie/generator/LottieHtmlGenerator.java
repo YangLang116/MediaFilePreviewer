@@ -4,6 +4,7 @@ import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.application.ReadAction;
 import com.intellij.openapi.vfs.VfsUtil;
 import com.intellij.openapi.vfs.VirtualFile;
+import com.intellij.util.ui.UIUtil;
 import com.xtu.plugin.previewer.common.DisplayUtils;
 import com.xtu.plugin.previewer.common.FileUtils;
 import com.xtu.plugin.previewer.common.OnResultListener;
@@ -35,6 +36,7 @@ public class LottieHtmlGenerator {
             //拼装html内容
             String result = htmlContent.replace("{style_placeholder}", cssContent)
                     .replace("{script_placeholder}", lottieJsContent + " " + jsContent)
+                    .replace("{body_color}", UIUtil.isUnderDarcula() ? "black" : "white")
                     .replace("{lottie_width}", String.valueOf(fitSize.getFirst() + 20))
                     .replace("{lottie_height}", String.valueOf(fitSize.getSecond() + 20))
                     .replace("{data_placeholder}", lottieContent);

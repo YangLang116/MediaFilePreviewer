@@ -4,6 +4,7 @@ import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.application.ReadAction;
 import com.intellij.openapi.vfs.VfsUtil;
 import com.intellij.openapi.vfs.VirtualFile;
+import com.intellij.util.ui.UIUtil;
 import com.xtu.plugin.previewer.common.FileUtils;
 import com.xtu.plugin.previewer.common.OnResultListener;
 import org.jetbrains.annotations.NotNull;
@@ -34,6 +35,7 @@ public class SvgaHtmlGenerator {
             String result = htmlContent.replace("{style_placeholder}", cssContent)
                     .replace("{script_placeholder}",
                             jsZipMinContent + " " + jsZipUtilsContent + " " + jsSvgaContent + " " + jsContent)
+                    .replace("{body_color}", UIUtil.isUnderDarcula() ? "black" : "white")
                     .replace("{file_content_placeholder}", svgaContent);
             ApplicationManager.getApplication().invokeLater(() -> listener.onResult(result));
         } catch (Exception e) {

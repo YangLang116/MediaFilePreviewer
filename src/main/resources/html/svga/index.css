@@ -1,5 +1,5 @@
 body {
-    background-color: white;
+    background-color: {body_color};
 }
 
 #control {
@@ -37,13 +37,14 @@ body {
     height: 300px;
     background-color: black;
     border-radius: 10px;
+    border: #3498DB solid 1px;
 }
 
 #canvas-background, #canvas-info, #image-info {
     margin-top: 30px;
     padding: 15px 50px;
     border-radius: 10px;
-    border: #A6A6A6 solid 1px;
+    border: #3498DB solid 1px;
     text-align: center;
 }
 
@@ -69,7 +70,7 @@ body {
     width: 40px;
     height: 40px;
     border-radius: 5px;
-    border: #A6A6A6 solid 1px;
+    border: #3498DB solid 1px;
 }
 
 #color-black {
@@ -106,7 +107,7 @@ body {
 
 .canvas-info-list-item, .image-info-list-item {
     font-size: 14px;
-    color: #333333;
+    color: #3498DB;
     line-height: 2;
 }
 

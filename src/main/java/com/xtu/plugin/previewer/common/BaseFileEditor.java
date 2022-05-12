@@ -10,6 +10,7 @@ import com.intellij.ui.JBColor;
 import com.intellij.ui.javafx.JavaFxHtmlPanel;
 import com.intellij.ui.jcef.JBCefApp;
 import com.intellij.ui.jcef.JBCefBrowser;
+import com.intellij.util.ui.UIUtil;
 import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -40,9 +41,10 @@ public class BaseFileEditor extends UserDataHolderBase implements FileEditor {
         LogUtils.info("BaseFileEditor supportJCEF: " + supportJCEF);
         if (supportJCEF) {
             this.jcefBrowser = new JBCefBrowser();
+            this.jcefBrowser.getComponent().setBackground(UIUtil.isUnderDarcula() ? JBColor.BLACK : JBColor.WHITE);
         } else {
             this.htmlPanel = new JavaFxHtmlPanel();
-            this.htmlPanel.setBackground(JBColor.white);
+            this.htmlPanel.setBackground(UIUtil.isUnderDarcula() ? JBColor.BLACK : JBColor.WHITE);
         }
     }
 

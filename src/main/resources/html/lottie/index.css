@@ -1,5 +1,5 @@
 body {
-    background-color: white;
+    background-color: {body_color};
 }
 
 #root {
@@ -12,7 +12,7 @@ body {
 #canvas {
     padding: 10px 10px;
     border-radius: 10px;
-    border: #A6A6A6 solid 1px;
+    border: #3498DB solid 1px;
     width: {lottie_width}px;
     height: {lottie_height}px;
 }
@@ -31,6 +31,6 @@ body {
     font-size: 16px;
     color: #3498DB;
     border-radius: 20px;
-    border: #A6A6A6 solid 1px;
+    border: #3498DB solid 1px;
     margin: 0 10px;
 }
