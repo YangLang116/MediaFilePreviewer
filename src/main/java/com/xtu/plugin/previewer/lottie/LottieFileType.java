@@ -1,8 +1,8 @@
 package com.xtu.plugin.previewer.lottie;
 
+import com.intellij.icons.AllIcons;
 import com.intellij.openapi.fileTypes.LanguageFileType;
 import com.intellij.openapi.util.NlsSafe;
-import icons.PluginIcons;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -38,6 +38,6 @@ public class LottieFileType extends LanguageFileType {
     @Override
     @Nullable
     public Icon getIcon() {
-        return PluginIcons.LOTTIE_ICON;
+        return AllIcons.FileTypes.Json;
     }
 }

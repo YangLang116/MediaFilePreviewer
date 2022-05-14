@@ -21,9 +21,9 @@ public class LottieFileEditorProvider implements FileEditorProvider, DumbAware {
             String jsonContent = VfsUtil.loadText(virtualFile);
             if (StringUtils.isEmpty(jsonContent)) return false;
             JSONObject jsonObject = new JSONObject(jsonContent);
-            return jsonObject.optString("v") != null
-                    && jsonObject.optString("w") != null
-                    && jsonObject.optString("h") != null;
+            return jsonObject.has("v")
+                    && jsonObject.has("w")
+                    && jsonObject.has("h");
         } catch (Exception e) {
             return false;
         }

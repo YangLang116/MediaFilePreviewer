@@ -3,8 +3,12 @@
 ## [Coming]
 ### Changed
 
-## [1.0.2] - 2022-05-12
+## [1.0.3] - 2022-05-14
 ### Changed
+
+## [1.0.3] - 2022-05-14
+### Changed
+- Optimize lottie file recognition
 
 ## [1.0.2] - 2022-05-12
 ### Changed
