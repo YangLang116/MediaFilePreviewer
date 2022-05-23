@@ -26,7 +26,7 @@ An IDEA Plugin for Media File to Preview, likes svga、lottie...
 <img src="https://cdn.jsdelivr.net/gh/YangLang116/picture_storage/lottie-opt.gif" width="600"/>
 
 ## 期望
-- 希望有更多小伙伴参与，增强IDEA对各类文件的支持
+- [Github](https://github.com/YangLang116/MediaFilePreviewer): 希望有更多小伙伴参与，增强IDEA对各类文件的支持
 
 ## 其他
 - [iFlutter](https://iflutter.toolu.cn): 一款辅助Flutter开发的 IDEA 插件
