@@ -36,6 +36,7 @@ public class SvgaHtmlGenerator {
                     .replace("{script_placeholder}",
                             jsZipMinContent + " " + jsZipUtilsContent + " " + jsSvgaContent + " " + jsContent)
                     .replace("{body_color}", UIUtil.isUnderDarcula() ? "black" : "white")
+                    .replace("{main_color}", UIUtil.isUnderDarcula() ? "white" : "black")
                     .replace("{file_content_placeholder}", svgaContent);
             ApplicationManager.getApplication().invokeLater(() -> listener.onResult(result));
         } catch (Exception e) {
