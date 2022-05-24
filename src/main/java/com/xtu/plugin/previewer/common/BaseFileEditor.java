@@ -43,7 +43,7 @@ public class BaseFileEditor extends UserDataHolderBase implements FileEditor {
             this.jcefBrowser = new JBCefBrowser();
             this.jcefBrowser.getComponent().setBackground(UIUtil.isUnderDarcula() ? JBColor.BLACK : JBColor.WHITE);
         } else {
-            this.htmlPanel = new JavaFxHtmlPanel();
+            this.htmlPanel = new MyFxHtmlPanel();
             this.htmlPanel.setBackground(UIUtil.isUnderDarcula() ? JBColor.BLACK : JBColor.WHITE);
         }
     }
