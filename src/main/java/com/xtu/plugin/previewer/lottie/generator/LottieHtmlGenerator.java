@@ -37,6 +37,7 @@ public class LottieHtmlGenerator {
             String result = htmlContent.replace("{style_placeholder}", cssContent)
                     .replace("{script_placeholder}", lottieJsContent + " " + jsContent)
                     .replace("{body_color}", UIUtil.isUnderDarcula() ? "black" : "white")
+                    .replace("{main_color}", UIUtil.isUnderDarcula() ? "white" : "black")
                     .replace("{lottie_width}", String.valueOf(fitSize.getFirst() + 20))
                     .replace("{lottie_height}", String.valueOf(fitSize.getSecond() + 20))
                     .replace("{data_placeholder}", lottieContent);

@@ -12,7 +12,7 @@ body {
 #canvas {
     padding: 10px 10px;
     border-radius: 10px;
-    border: #3498DB solid 1px;
+    border: {main_color} solid 1px;
     width: {lottie_width}px;
     height: {lottie_height}px;
 }
@@ -29,8 +29,8 @@ body {
     text-align: center;
     line-height: 40px;
     font-size: 16px;
-    color: #3498DB;
+    color: #30CC71;
     border-radius: 20px;
-    border: #3498DB solid 1px;
+    border: {main_color} solid 1px;
     margin: 0 10px;
 }
