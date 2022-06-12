@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{title}</title>
+    <style type="text/css">
+		body {
+			display: flex;
+			justify-content: center;
+			background-color: {body_color};
+		}
+		#audio {
+			position: absolute;
+			top: 40%;
+		}
+    </style>
+    <script>
+        function onPageLoad() {
+            let intArray = new Int8Array({data})
+            const u8Blob = new Blob([intArray], {type: "*/*"})
+            let audioElement = document.getElementById('audio')
+            audioElement.src = URL.createObjectURL(u8Blob)
+        }
+    </script>
+</head>
+<body onload="onPageLoad()">
+<audio id="audio" controls autoplay loop></audio>
+</body>
+</html>

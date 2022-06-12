@@ -23,6 +23,18 @@
                   language="lottie"
                   extensions="json"/>
         <fileEditorProvider implementation="com.xtu.plugin.previewer.lottie.LottieFileEditorProvider"/>
+        <!--audio-->
+        <fileType name="wav file"
+                  implementationClass="com.xtu.plugin.previewer.audio.wav.AudioWavFileType"
+                  fileNames="INSTANCE"
+                  language="wav"
+                  extensions="wav"/>
+        <fileType name="mp3 file"
+                  implementationClass="com.xtu.plugin.previewer.audio.mp3.AudioMp3FileType"
+                  fileNames="INSTANCE"
+                  language="mp3"
+                  extensions="mp3"/>
+        <fileEditorProvider implementation="com.xtu.plugin.previewer.audio.AudioFileEditorProvider"/>
     </extensions>
 
 </idea-plugin>
