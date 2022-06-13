@@ -35,6 +35,13 @@
                   language="mp3"
                   extensions="mp3"/>
         <fileEditorProvider implementation="com.xtu.plugin.previewer.audio.AudioFileEditorProvider"/>
+        <!--video-->
+        <fileType name="mp4 file"
+                  implementationClass="com.xtu.plugin.previewer.video.mp4.VideoMp4FileType"
+                  fileNames="INSTANCE"
+                  language="mp4"
+                  extensions="mp4"/>
+        <fileEditorProvider implementation="com.xtu.plugin.previewer.video.VideoFileEditorProvider"/>
     </extensions>
 
 </idea-plugin>
