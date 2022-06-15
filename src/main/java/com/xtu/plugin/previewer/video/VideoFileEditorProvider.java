@@ -21,7 +21,7 @@ public class VideoFileEditorProvider implements FileEditorProvider, DumbAware {
 
     @Override
     public @NotNull FileEditor createEditor(@NotNull Project project, @NotNull VirtualFile virtualFile) {
-        return new VideoFileEditor(project, virtualFile);
+        return new VideoFileEditor(virtualFile);
     }
 
     @Override
