@@ -223,7 +223,11 @@ public final class VideoComponent extends JComponent {
 
     public void release() {
         this.isRelease = true;
-        this.executorService.shutdown();
+        try {
+            this.executorService.shutdown();
+        } catch (Exception e) {
+            //ignore
+        }
     }
 
     //打开系统声卡
