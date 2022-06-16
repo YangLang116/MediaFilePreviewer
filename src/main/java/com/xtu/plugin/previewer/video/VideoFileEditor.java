@@ -23,6 +23,7 @@ public class VideoFileEditor extends UserDataHolderBase implements FileEditor {
     public VideoFileEditor(VirtualFile videoFile) {
         this.videoFile = videoFile;
         this.videoComponent = new VideoComponent();
+        this.videoComponent.setMaxVideoSize(new Dimension(720, 480));
         this.videoContainer = new JPanel(new BorderLayout());
         this.videoContainer.add(videoComponent, BorderLayout.CENTER);
         this.videoComponent.setOnFrameChangeListener(videoContainer::setSize);

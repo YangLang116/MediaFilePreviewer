@@ -7,6 +7,7 @@ import com.xuggle.xuggler.*;
 import javax.sound.sampled.*;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.util.Objects;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -30,6 +31,7 @@ public final class VideoComponent extends JComponent {
     private volatile boolean isRelease;
     private final ExecutorService executorService;
 
+    private Dimension maxVideoSize;
     private OnFrameChangeListener frameChangeListener;
 
     public VideoComponent() {
@@ -40,6 +42,10 @@ public final class VideoComponent extends JComponent {
 
     public void setOnFrameChangeListener(OnFrameChangeListener listener) {
         this.frameChangeListener = listener;
+    }
+
+    public void setMaxVideoSize(Dimension maxSize) {
+        this.maxVideoSize = maxSize;
     }
 
     public void playVideo(String url, boolean loop) {
@@ -183,7 +189,21 @@ public final class VideoComponent extends JComponent {
     }
 
     private Image createImage(IVideoPicture newPic) {
-        return Utils.videoPictureToImage(newPic);
+        int width = newPic.getWidth();
+        int height = newPic.getHeight();
+        BufferedImage image = Utils.videoPictureToImage(newPic);
+//        if (width > maxVideoSize.width || height > maxVideoSize.height) {
+//            double widthRadio = width * 1.0f / maxVideoSize.width;
+//            double heightRadio = height * 1.0f / maxVideoSize.height;
+//            double radio = Math.max(widthRadio, heightRadio);
+//            int finalWidth = (int) (width / radio);
+//            int finalHeight = (int) (height / radio);
+//            Image scaledImage = image.getScaledInstance(finalWidth, finalHeight, Image.SCALE_DEFAULT);
+//            image.flush();
+//            return scaledImage;
+//        } else {
+            return image;
+//        }
     }
 
     private long millisecondsUntilTimeToDisplay(IVideoPicture picture) {
@@ -201,7 +221,7 @@ public final class VideoComponent extends JComponent {
             // remember that IVideoPicture and IAudioSamples timestamps are always in MICROSECONDS,
             // so we divide by 1000 to get milliseconds.
             long millisecondsStreamTimeSinceStartOfVideo = (picture.getTimeStamp() - this.playStartTime) / 1000;
-            millisecondsToSleep = millisecondsStreamTimeSinceStartOfVideo - millisecondsClockTimeSinceStartVideo - 500;
+            millisecondsToSleep = millisecondsStreamTimeSinceStartOfVideo - millisecondsClockTimeSinceStartVideo;
         }
         return millisecondsToSleep;
     }
@@ -280,14 +300,16 @@ public final class VideoComponent extends JComponent {
             this.frameSize = newSize;
             this.frameChangeListener.onSizeChanged(newSize);
         }
-        if (this.frameImage != null) this.frameImage.flush();
         this.frameImage = newImage;
         this.repaint();
     }
 
     @Override
     public synchronized void paint(Graphics g) {
-        if (this.frameImage != null) g.drawImage(this.frameImage, 0, 0, this);
+        if (this.frameImage != null){
+            g.drawImage(this.frameImage, 0, 0, this);
+            this.frameImage.flush();
+        }
     }
 
     public interface OnFrameChangeListener {
