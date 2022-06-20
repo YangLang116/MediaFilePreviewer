@@ -7,7 +7,6 @@ import com.xuggle.xuggler.*;
 import javax.sound.sampled.*;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.image.BufferedImage;
 import java.util.Objects;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -162,7 +161,7 @@ public final class VideoComponent extends JComponent {
                             Thread.sleep(delay);
                         }
                         Image bufferedImage = createImage(newPic);
-                        ApplicationManager.getApplication().invokeLater(new ImageRunnable(bufferedImage));
+                        SwingUtilities.invokeLater(new ImageRunnable(bufferedImage));
                     }
                 }
                 //播放音频
@@ -189,9 +188,10 @@ public final class VideoComponent extends JComponent {
     }
 
     private Image createImage(IVideoPicture newPic) {
-        int width = newPic.getWidth();
-        int height = newPic.getHeight();
-        BufferedImage image = Utils.videoPictureToImage(newPic);
+        return Utils.videoPictureToImage(newPic);
+//        int width = newPic.getWidth();
+//        int height = newPic.getHeight();
+//        BufferedImage image = Utils.videoPictureToImage(newPic);
 //        if (width > maxVideoSize.width || height > maxVideoSize.height) {
 //            double widthRadio = width * 1.0f / maxVideoSize.width;
 //            double heightRadio = height * 1.0f / maxVideoSize.height;
@@ -199,10 +199,13 @@ public final class VideoComponent extends JComponent {
 //            int finalWidth = (int) (width / radio);
 //            int finalHeight = (int) (height / radio);
 //            Image scaledImage = image.getScaledInstance(finalWidth, finalHeight, Image.SCALE_DEFAULT);
-//            image.flush();
-//            return scaledImage;
+//            BufferedImage newImage = new BufferedImage(finalWidth, finalHeight, BufferedImage.TYPE_INT_RGB);
+//            Graphics graphics = newImage.getGraphics();
+//            graphics.drawImage(scaledImage, 0, 0, null);
+//            graphics.dispose();
+//            return newImage;
 //        } else {
-            return image;
+//            return image;
 //        }
     }
 
@@ -306,9 +309,10 @@ public final class VideoComponent extends JComponent {
 
     @Override
     public synchronized void paint(Graphics g) {
-        if (this.frameImage != null){
+        if (this.frameImage != null) {
             g.drawImage(this.frameImage, 0, 0, this);
             this.frameImage.flush();
+            this.frameImage = null;
         }
     }
 
