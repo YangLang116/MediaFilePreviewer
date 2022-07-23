@@ -29,10 +29,10 @@ public class LottieHtmlGenerator {
             int width = (int) lottieJson.optDouble("w", 0);
             int height = (int) lottieJson.optDouble("h", 0);
             Pair<Integer, Integer> fitSize = DisplayUtils.getFitSize(width, height);
-            String htmlContent = FileUtils.readTextFromResource("/html/lottie/index.html");
-            String cssContent = FileUtils.readTextFromResource("/html/lottie/index.css");
-            String lottieJsContent = FileUtils.readTextFromResource("/html/lottie/libs/lottie_light.min.js");
-            String jsContent = FileUtils.readTextFromResource("/html/lottie/index.js");
+            String htmlContent = FileUtils.readTextFromResource("html/lottie/index.html");
+            String cssContent = FileUtils.readTextFromResource("html/lottie/index.css");
+            String lottieJsContent = FileUtils.readTextFromResource("html/lottie/libs/lottie_light.min.js");
+            String jsContent = FileUtils.readTextFromResource("html/lottie/index.js");
             //拼装html内容
             String result = htmlContent.replace("{style_placeholder}", cssContent)
                     .replace("{script_placeholder}", lottieJsContent + " " + jsContent)

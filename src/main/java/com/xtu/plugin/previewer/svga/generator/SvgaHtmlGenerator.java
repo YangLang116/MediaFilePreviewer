@@ -25,12 +25,12 @@ public class SvgaHtmlGenerator {
                                         @NotNull OnResultListener listener) {
         try {
             String svgaContent = readSvgaContent(VfsUtil.loadBytes(svgaFile));
-            String htmlContent = FileUtils.readTextFromResource("/html/svga/index.html");
-            String cssContent = FileUtils.readTextFromResource("/html/svga/index.css");
-            String jsZipMinContent = FileUtils.readTextFromResource("/html/svga/libs/jszip.min.js");
-            String jsZipUtilsContent = FileUtils.readTextFromResource("/html/svga/libs/jszip-utils.min.js");
-            String jsSvgaContent = FileUtils.readTextFromResource("/html/svga/libs/svga.min.js");
-            String jsContent = FileUtils.readTextFromResource("/html/svga/index.js");
+            String htmlContent = FileUtils.readTextFromResource("html/svga/index.html");
+            String cssContent = FileUtils.readTextFromResource("html/svga/index.css");
+            String jsZipMinContent = FileUtils.readTextFromResource("html/svga/libs/jszip.min.js");
+            String jsZipUtilsContent = FileUtils.readTextFromResource("html/svga/libs/jszip-utils.min.js");
+            String jsSvgaContent = FileUtils.readTextFromResource("html/svga/libs/svga.min.js");
+            String jsContent = FileUtils.readTextFromResource("html/svga/index.js");
             //拼装html内容
             String result = htmlContent.replace("{style_placeholder}", cssContent)
                     .replace("{script_placeholder}",

@@ -106,6 +106,12 @@ public class BaseFileEditor extends UserDataHolderBase implements FileEditor {
         return null;
     }
 
+    @Nullable
+    @Override
+    public VirtualFile getFile() {
+        return file;
+    }
+
     @Override
     public void dispose() {
         if (this.jcefBrowser != null) {
