@@ -12,11 +12,15 @@ import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONObject;
 
+import java.util.Locale;
+
 public class LottieFileEditorProvider implements FileEditorProvider, DumbAware {
 
     @Override
     public boolean accept(@NotNull Project project, @NotNull VirtualFile virtualFile) {
-        if (!(virtualFile.getFileType() instanceof LottieFileType)) return false;
+        String fileExtension = virtualFile.getExtension();
+        if (fileExtension == null) return false;
+        if (!StringUtils.equals(fileExtension.toLowerCase(Locale.ROOT), "json")) return false;
         try {
             String jsonContent = VfsUtil.loadText(virtualFile);
             if (StringUtils.isEmpty(jsonContent)) return false;

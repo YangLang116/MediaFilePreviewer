@@ -6,15 +6,20 @@ import com.intellij.openapi.fileEditor.FileEditorProvider;
 import com.intellij.openapi.project.DumbAware;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
+import org.apache.commons.lang.StringUtils;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.Locale;
 
 @SuppressWarnings("SpellCheckingInspection")
 public class SvgaFileEditorProvider implements FileEditorProvider, DumbAware {
 
     @Override
     public boolean accept(@NotNull Project project, @NotNull VirtualFile virtualFile) {
-        return virtualFile.getFileType() instanceof SvgaFileType;
+        String fileExtension = virtualFile.getExtension();
+        if (fileExtension == null) return false;
+        return StringUtils.equals(fileExtension.toLowerCase(Locale.ROOT), "svga");
     }
 
     @Override
@@ -33,6 +38,6 @@ public class SvgaFileEditorProvider implements FileEditorProvider, DumbAware {
     @Override
     @NotNull
     public FileEditorPolicy getPolicy() {
-        return FileEditorPolicy.HIDE_DEFAULT_EDITOR;
+        return FileEditorPolicy.PLACE_BEFORE_DEFAULT_EDITOR;
     }
 }

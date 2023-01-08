@@ -3,6 +3,11 @@
 ## [Coming]
 ### Changed
 
+## [1.0.6] - 2023-01-08
+### Changed
+- fix lottie preview size issue
+- compatible with npm
+
 ## [1.0.5] - 2022-07-23
 ### Changed
 - fix issue
