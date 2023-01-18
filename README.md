@@ -22,13 +22,15 @@ An IDEA Plugin for Media File to Preview, likes svga、lottie...
 
 ## 效果展示
 
-- SVGA 文件预览
+- SVGA 文件预览(支持IDEA不同主题)
 
+<img src="https://cdn.jsdelivr.net/gh/YangLang116/picture_storage/svga_usage.png" width="600"/>
 <img src="https://cdn.jsdelivr.net/gh/YangLang116/picture_storage/svga-opt.gif" width="600"/>
 
 
-- Lottie 文件预览
+- Lottie 文件预览(支持IDEA不同主题)
 
+<img src="https://cdn.jsdelivr.net/gh/YangLang116/picture_storage/lottie_usage.png" width="600"/>
 <img src="https://cdn.jsdelivr.net/gh/YangLang116/picture_storage/lottie-opt.gif" width="600"/>
 
 ## 期望
