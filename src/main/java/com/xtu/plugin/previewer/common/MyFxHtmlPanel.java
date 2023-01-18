@@ -1,15 +1,19 @@
 package com.xtu.plugin.previewer.common;
 
 import com.intellij.ui.javafx.JavaFxHtmlPanel;
-import javafx.scene.web.WebEngine;
-import org.jetbrains.annotations.NotNull;
+import javafx.application.Platform;
 
 public class MyFxHtmlPanel extends JavaFxHtmlPanel {
 
-    @Override
-    protected void registerListeners(@NotNull WebEngine engine) {
-        if (myWebView != null) {
-            myWebView.setZoom(0.9);
-        }
+    public void setZoomLevel(double zoom) {
+        Platform.runLater(() -> {
+            if (myWebView == null) return;
+            myWebView.setZoom(zoom);
+        });
+    }
+
+    public double getZoomLevel() {
+        if (myWebView == null) return 1.0;
+        return myWebView.getZoom();
     }
 }

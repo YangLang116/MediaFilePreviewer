@@ -3,11 +3,9 @@ package com.xtu.plugin.previewer.common;
 import com.intellij.openapi.fileEditor.FileEditor;
 import com.intellij.openapi.fileEditor.FileEditorLocation;
 import com.intellij.openapi.fileEditor.FileEditorState;
-import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.UserDataHolderBase;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.ui.JBColor;
-import com.intellij.ui.javafx.JavaFxHtmlPanel;
 import com.intellij.ui.jcef.JBCefApp;
 import com.intellij.ui.jcef.JBCefBrowser;
 import com.intellij.util.ui.UIUtil;
@@ -16,22 +14,20 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
+import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
 import java.beans.PropertyChangeListener;
 
 public class BaseFileEditor extends UserDataHolderBase implements FileEditor {
 
     private final String name;
-    private final Project project;
     private final VirtualFile file;
 
     private JBCefBrowser jcefBrowser;
-    private JavaFxHtmlPanel htmlPanel;
+    private MyFxHtmlPanel htmlPanel;
 
-    public BaseFileEditor(@NotNull String name,
-                          @NotNull Project project,
-                          @NotNull VirtualFile file) {
+    public BaseFileEditor(@NotNull String name, @NotNull VirtualFile file) {
         this.name = name;
-        this.project = project;
         this.file = file;
         this.initBrowser();
     }
@@ -41,10 +37,14 @@ public class BaseFileEditor extends UserDataHolderBase implements FileEditor {
         LogUtils.info("BaseFileEditor supportJCEF: " + supportJCEF);
         if (supportJCEF) {
             this.jcefBrowser = new JBCefBrowser();
-            this.jcefBrowser.getComponent().setBackground(UIUtil.isUnderDarcula() ? JBColor.BLACK : JBColor.WHITE);
+            JComponent jcefComponent = this.jcefBrowser.getComponent();
+            jcefComponent.setBackground(UIUtil.isUnderDarcula() ? JBColor.BLACK : JBColor.WHITE);
+            registerKeyBoardEvent(jcefComponent, jcefBrowser::getZoomLevel, jcefBrowser::setZoomLevel);
         } else {
             this.htmlPanel = new MyFxHtmlPanel();
             this.htmlPanel.setBackground(UIUtil.isUnderDarcula() ? JBColor.BLACK : JBColor.WHITE);
+            JComponent htmlPanelComponent = htmlPanel.getComponent();
+            registerKeyBoardEvent(htmlPanelComponent, htmlPanel::getZoomLevel, htmlPanel::setZoomLevel);
         }
     }
 
@@ -119,5 +119,30 @@ public class BaseFileEditor extends UserDataHolderBase implements FileEditor {
         } else {
             this.htmlPanel.dispose();
         }
+    }
+
+    public void registerKeyBoardEvent(@NotNull JComponent component,
+                                      @NotNull ZoomValueProvider zoomValueProvider,
+                                      @NotNull ZoomValueSetter zoomValueSetter) {
+        int maskKey = InputEvent.SHIFT_DOWN_MASK;
+        //放大
+        component.registerKeyboardAction(e -> {
+            double currentZoom = zoomValueProvider.getZoom();
+            zoomValueSetter.setZoom(currentZoom + 0.1D);
+        }, KeyStroke.getKeyStroke(KeyEvent.VK_W, maskKey), JComponent.WHEN_IN_FOCUSED_WINDOW);
+        //缩小
+        component.registerKeyboardAction(e -> {
+            double currentZoom = zoomValueProvider.getZoom();
+            zoomValueSetter.setZoom(currentZoom - 0.1D);
+        }, KeyStroke.getKeyStroke(KeyEvent.VK_S, maskKey), JComponent.WHEN_IN_FOCUSED_WINDOW);
+        component.requestFocus();
+    }
+
+    private interface ZoomValueProvider {
+        double getZoom();
+    }
+
+    private interface ZoomValueSetter {
+        void setZoom(double zoom);
     }
 }

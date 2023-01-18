@@ -3,6 +3,10 @@
 ## [Coming]
 ### Changed
 
+## [1.0.7] - 2023-01-18
+### Changed
+- support scale with keymap
+
 ## [1.0.6] - 2023-01-08
 ### Changed
 - fix lottie preview size issue

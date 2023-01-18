@@ -4,7 +4,7 @@ An IDEA Plugin for Media File to Preview, likes svga、lottie...
 
 ## MediaFilePreviewer 致力于加强IDEA对媒体文件的支持
 
-![platforms](https://img.shields.io/badge/platforms-macos%20%7C%20windows%20%7C%20linux-blue) ![tools](https://img.shields.io/badge/idea-intellij_IDEA%20%7C%20AndroidStudio-blue) ![licence](https://img.shields.io/badge/licence-MIT-blue) ![version](https://img.shields.io/badge/version-v1.0.6-blue)
+![platforms](https://img.shields.io/badge/platforms-macos%20%7C%20windows%20%7C%20linux-blue) ![tools](https://img.shields.io/badge/idea-intellij_IDEA%20%7C%20AndroidStudio-blue) ![licence](https://img.shields.io/badge/licence-MIT-blue) ![version](https://img.shields.io/badge/version-v1.0.7-blue)
 
 ## 插件安装
 > 插件已上传官方Plugins仓库，可搜索 MediaFilePreviewer 下载
@@ -13,6 +13,12 @@ An IDEA Plugin for Media File to Preview, likes svga、lottie...
 - 支持SVGA 预览
 - 支持SVGA META信息提取
 - 支持Lottie 播放控制
+
+## 支持缩放  
+| 操作  |    快捷键    |
+|:---:|:---------:|
+| 放大  | shift + w |
+| 缩小  | shift + s |
 
 ## 效果展示
 
