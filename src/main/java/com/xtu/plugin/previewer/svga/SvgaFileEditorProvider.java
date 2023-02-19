@@ -15,6 +15,8 @@ import java.util.Locale;
 @SuppressWarnings("SpellCheckingInspection")
 public class SvgaFileEditorProvider implements FileEditorProvider, DumbAware {
 
+    private static final String EDITOR_NAME = "SVGA Editor";
+
     @Override
     public boolean accept(@NotNull Project project, @NotNull VirtualFile virtualFile) {
         String fileExtension = virtualFile.getExtension();
@@ -25,14 +27,14 @@ public class SvgaFileEditorProvider implements FileEditorProvider, DumbAware {
     @Override
     @NotNull
     public FileEditor createEditor(@NotNull Project project, @NotNull VirtualFile virtualFile) {
-        return new SvgaFileEditor(virtualFile);
+        return new SvgaFileEditor(EDITOR_NAME, virtualFile);
     }
 
     @Override
     @NotNull
     @NonNls
     public String getEditorTypeId() {
-        return "SVGA Editor";
+        return EDITOR_NAME;
     }
 
     @Override

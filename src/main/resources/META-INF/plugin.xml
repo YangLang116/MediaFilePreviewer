@@ -13,6 +13,15 @@
         <fileEditorProvider implementation="com.xtu.plugin.previewer.svga.SvgaFileEditorProvider"/>
         <!--lottie-->
         <fileEditorProvider implementation="com.xtu.plugin.previewer.lottie.LottieFileEditorProvider"/>
+        <!--webp-->
+        <fileEditorProvider implementation="com.xtu.plugin.previewer.webp.WebpFileEditorProvider"/>
+        <!--svg-->
+        <fileEditorProvider implementation="com.xtu.plugin.previewer.svg.SVGFileEditorProvider"/>
     </extensions>
+    <applicationListeners>
+        <listener
+                class="listener.AppLifecycleListenerImpl"
+                topic="com.intellij.ide.AppLifecycleListener"/>
+    </applicationListeners>
 
 </idea-plugin>

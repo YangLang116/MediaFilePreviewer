@@ -8,8 +8,8 @@ import org.jetbrains.annotations.NotNull;
 @SuppressWarnings("SpellCheckingInspection")
 public class SvgaFileEditor extends BaseFileEditor {
 
-    public SvgaFileEditor(@NotNull VirtualFile file) {
-        super("SVGA Editor", file);
+    public SvgaFileEditor(@NotNull String name, @NotNull VirtualFile file) {
+        super(name, file);
         SvgaHtmlGenerator.generate(file, this::loadHtml);
     }
 }

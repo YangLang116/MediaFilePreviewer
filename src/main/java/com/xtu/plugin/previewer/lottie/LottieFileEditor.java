@@ -7,8 +7,8 @@ import org.jetbrains.annotations.NotNull;
 
 public class LottieFileEditor extends BaseFileEditor {
 
-    public LottieFileEditor(@NotNull VirtualFile file) {
-        super("Lottie Editor", file);
+    public LottieFileEditor(@NotNull String name, @NotNull VirtualFile file) {
+        super(name, file);
         LottieHtmlGenerator.generate(file, this::loadHtml);
     }
 }

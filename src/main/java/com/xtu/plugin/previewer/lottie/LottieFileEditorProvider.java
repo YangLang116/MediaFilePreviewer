@@ -16,6 +16,8 @@ import java.util.Locale;
 
 public class LottieFileEditorProvider implements FileEditorProvider, DumbAware {
 
+    private static final String EDITOR_NAME = "Lottie Editor";
+
     @Override
     public boolean accept(@NotNull Project project, @NotNull VirtualFile virtualFile) {
         String fileExtension = virtualFile.getExtension();
@@ -36,14 +38,14 @@ public class LottieFileEditorProvider implements FileEditorProvider, DumbAware {
     @Override
     @NotNull
     public FileEditor createEditor(@NotNull Project project, @NotNull VirtualFile virtualFile) {
-        return new LottieFileEditor(virtualFile);
+        return new LottieFileEditor(EDITOR_NAME, virtualFile);
     }
 
     @Override
     @NotNull
     @NonNls
     public String getEditorTypeId() {
-        return "Lottie Editor";
+        return EDITOR_NAME;
     }
 
     @Override

@@ -1,4 +1,4 @@
-package com.xtu.plugin.previewer.common;
+package com.xtu.plugin.previewer.common.utils;
 
 import com.intellij.openapi.diagnostic.Logger;
 

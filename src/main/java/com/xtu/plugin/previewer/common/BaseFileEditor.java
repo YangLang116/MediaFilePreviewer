@@ -9,6 +9,8 @@ import com.intellij.ui.JBColor;
 import com.intellij.ui.jcef.JBCefApp;
 import com.intellij.ui.jcef.JBCefBrowser;
 import com.intellij.util.ui.UIUtil;
+import com.xtu.plugin.previewer.common.ui.MyFxHtmlPanel;
+import com.xtu.plugin.previewer.common.utils.LogUtils;
 import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;

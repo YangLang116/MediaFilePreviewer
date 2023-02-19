@@ -26,6 +26,8 @@ repositories {
 
 dependencies {
     implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
+    implementation("com.twelvemonkeys.imageio", "imageio-webp", "3.9.4")
+    implementation("com.twelvemonkeys.imageio", "imageio-batik", "3.9.4")
 }
 
 // Configure Gradle IntelliJ Plugin - read more: https://github.com/JetBrains/gradle-intellij-plugin
