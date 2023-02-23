@@ -1,21 +1,23 @@
 package com.xtu.plugin.previewer.common.utils;
 
+import com.intellij.openapi.util.text.StringUtil;
+import com.intellij.openapi.vfs.VirtualFile;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import javax.imageio.IIOException;
 import javax.imageio.ImageIO;
 import javax.imageio.ImageReadParam;
 import javax.imageio.ImageReader;
 import javax.imageio.spi.ImageReaderSpi;
 import javax.imageio.stream.ImageInputStream;
 import java.awt.image.BufferedImage;
+import java.awt.image.ColorModel;
 import java.io.File;
-import java.io.IOException;
 import java.util.Iterator;
 
 public class ImageUtils {
 
+    @SuppressWarnings("SpellCheckingInspection")
     private static boolean isTwelveMonkeysRead(@NotNull ImageReader reader) {
         ImageReaderSpi imageReaderSpi = reader.getOriginatingProvider();
         if (imageReaderSpi == null) return false;
@@ -34,18 +36,30 @@ public class ImageUtils {
         return false;
     }
 
-    @Nullable
-    public static BufferedImage read(@NotNull File file) throws IOException {
-        if (!file.canRead()) throw new IIOException("Can't read input file!");
-        ImageInputStream stream = ImageIO.createImageInputStream(file);
-        if (stream == null) throw new IIOException("Can't create an ImageInputStream!");
-        BufferedImage bi = read(stream);
-        if (bi == null) stream.close();
-        return bi;
+    public static String getImageInfo(String imageType, @NotNull BufferedImage image, @NotNull VirtualFile file) {
+        final int width = image.getWidth();
+        final int height = image.getHeight();
+        final ColorModel colorModel = image.getColorModel();
+        final int imageMode = colorModel.getPixelSize();
+        String imageSize = StringUtil.formatFileSize(file.getLength());
+        return String.format("%dx%d %s (%d-bit color) %s", width, height, imageType, imageMode, imageSize);
     }
 
     @Nullable
-    private static BufferedImage read(@NotNull ImageInputStream stream) throws IOException {
+    public static BufferedImage[] readFile(@NotNull VirtualFile virtualFile) {
+        String filePath = virtualFile.getPath();
+        File imageFile = new File(filePath);
+        if (!imageFile.canRead()) return null;
+        try (ImageInputStream stream = ImageIO.createImageInputStream(imageFile)) {
+            return readStream(stream);
+        } catch (Exception e) {
+            LogUtils.error("ImageUtils readFile: " + e.getMessage());
+            return null;
+        }
+    }
+
+    @Nullable
+    private static BufferedImage[] readStream(@NotNull ImageInputStream stream) {
         Iterator<ImageReader> iterator = ImageIO.getImageReaders(stream);
         while (iterator.hasNext()) {
             ImageReader reader = iterator.next();
@@ -54,16 +68,23 @@ public class ImageUtils {
         return null;
     }
 
-    private static BufferedImage loadImage(@NotNull ImageInputStream stream, @NotNull ImageReader reader) throws IOException {
-        ImageReadParam param = reader.getDefaultReadParam();
-        reader.setInput(stream, true, true);
-        BufferedImage bi;
-        try (stream) {
-            bi = reader.read(0, param);
+    @Nullable
+    private static BufferedImage[] loadImage(@NotNull ImageInputStream stream, @NotNull ImageReader reader) {
+        try {
+            ImageReadParam param = reader.getDefaultReadParam();
+            reader.setInput(stream, false, true);
+            int imageNum = reader.getNumImages(true);
+            BufferedImage[] imageList = new BufferedImage[imageNum];
+            for (int index = 0; index < imageNum; index++) {
+                BufferedImage bufferedImage = reader.read(index, param);
+                imageList[index] = bufferedImage;
+            }
+            return imageList;
+        } catch (Exception e) {
+            LogUtils.error("ImageUtils loadImage: " + e.getMessage());
+            return null;
         } finally {
             reader.dispose();
         }
-        return bi;
     }
-
 }

@@ -20,7 +20,7 @@ import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.beans.PropertyChangeListener;
 
-public class BaseFileEditor extends UserDataHolderBase implements FileEditor {
+public class BaseHtmLoadEditor extends UserDataHolderBase implements FileEditor {
 
     private final String name;
     private final VirtualFile file;
@@ -28,7 +28,7 @@ public class BaseFileEditor extends UserDataHolderBase implements FileEditor {
     private JBCefBrowser jcefBrowser;
     private MyFxHtmlPanel htmlPanel;
 
-    public BaseFileEditor(@NotNull String name, @NotNull VirtualFile file) {
+    public BaseHtmLoadEditor(@NotNull String name, @NotNull VirtualFile file) {
         this.name = name;
         this.file = file;
         this.initBrowser();

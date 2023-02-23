@@ -38,7 +38,7 @@ public class LottieFileEditorProvider implements FileEditorProvider, DumbAware {
     @Override
     @NotNull
     public FileEditor createEditor(@NotNull Project project, @NotNull VirtualFile virtualFile) {
-        return new LottieFileEditor(EDITOR_NAME, virtualFile);
+        return new LottieHtmLoadEditor(EDITOR_NAME, virtualFile);
     }
 
     @Override
