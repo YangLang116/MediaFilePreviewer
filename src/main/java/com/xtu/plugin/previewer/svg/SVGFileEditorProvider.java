@@ -28,7 +28,7 @@ public class SVGFileEditorProvider implements FileEditorProvider {
 
     @Override
     public @NotNull FileEditor createEditor(@NotNull Project project, @NotNull VirtualFile virtualFile) {
-        return new SVGFileEditor(EDITOR_NAME, virtualFile);
+        return new SVGFileEditor(EDITOR_NAME, virtualFile, EXTENSION);
     }
 
     @Override

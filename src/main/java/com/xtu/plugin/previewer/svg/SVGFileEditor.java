@@ -6,7 +6,7 @@ import org.jetbrains.annotations.NotNull;
 
 public class SVGFileEditor extends BaseBufferImageEditor {
 
-    public SVGFileEditor(@NotNull String name, @NotNull VirtualFile file) {
-        super(name, "SVG", file);
+    public SVGFileEditor(@NotNull String name, @NotNull VirtualFile file, @NotNull String imageType) {
+        super(name, file, imageType);
     }
 }

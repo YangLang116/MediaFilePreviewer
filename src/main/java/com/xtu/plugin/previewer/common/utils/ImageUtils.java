@@ -6,12 +6,12 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import javax.imageio.ImageIO;
-import javax.imageio.ImageReadParam;
 import javax.imageio.ImageReader;
 import javax.imageio.spi.ImageReaderSpi;
 import javax.imageio.stream.ImageInputStream;
 import java.awt.image.BufferedImage;
 import java.awt.image.ColorModel;
+import java.io.Closeable;
 import java.io.File;
 import java.util.Iterator;
 
@@ -46,45 +46,47 @@ public class ImageUtils {
     }
 
     @Nullable
-    public static BufferedImage[] readFile(@NotNull VirtualFile virtualFile) {
-        String filePath = virtualFile.getPath();
+    public static ImageReader getTwelveMonkeysRead(@NotNull String imageType, @NotNull VirtualFile file) {
+        String filePath = file.getPath();
         File imageFile = new File(filePath);
         if (!imageFile.canRead()) return null;
-        try (ImageInputStream stream = ImageIO.createImageInputStream(imageFile)) {
-            return readStream(stream);
-        } catch (Exception e) {
-            LogUtils.error("ImageUtils readFile: " + e.getMessage());
-            return null;
-        }
-    }
-
-    @Nullable
-    private static BufferedImage[] readStream(@NotNull ImageInputStream stream) {
-        Iterator<ImageReader> iterator = ImageIO.getImageReaders(stream);
+        Iterator<ImageReader> iterator = ImageIO.getImageReadersByFormatName(imageType);
         while (iterator.hasNext()) {
             ImageReader reader = iterator.next();
-            if (isTwelveMonkeysRead(reader)) return loadImage(stream, reader);
+            if (isTwelveMonkeysRead(reader)) return loadInputWithReader(reader, imageFile);
         }
         return null;
     }
 
     @Nullable
-    private static BufferedImage[] loadImage(@NotNull ImageInputStream stream, @NotNull ImageReader reader) {
+    private static ImageReader loadInputWithReader(@NotNull ImageReader reader, @NotNull File imageFile) {
+        ImageInputStream stream = null;
         try {
-            ImageReadParam param = reader.getDefaultReadParam();
+            stream = ImageIO.createImageInputStream(imageFile);
             reader.setInput(stream, false, true);
-            int imageNum = reader.getNumImages(true);
-            BufferedImage[] imageList = new BufferedImage[imageNum];
-            for (int index = 0; index < imageNum; index++) {
-                BufferedImage bufferedImage = reader.read(index, param);
-                imageList[index] = bufferedImage;
-            }
-            return imageList;
-        } catch (Exception e) {
+            return reader;
+        } catch (Throwable e) {
+            CloseUtils.close(stream);
+            LogUtils.error("ImageUtils loadInputWithReader: " + e.getMessage());
+            return null;
+        }
+    }
+
+    @Nullable
+    public static BufferedImage loadImage(@NotNull ImageReader reader, int imageIndex) {
+        try {
+            return reader.read(imageIndex);
+        } catch (Throwable e) {
             LogUtils.error("ImageUtils loadImage: " + e.getMessage());
             return null;
-        } finally {
-            reader.dispose();
         }
+    }
+
+    public static void dispose(@NotNull ImageReader reader) {
+        Object readerInput = reader.getInput();
+        if (readerInput instanceof Closeable) {
+            CloseUtils.close((Closeable) readerInput);
+        }
+        reader.dispose();
     }
 }

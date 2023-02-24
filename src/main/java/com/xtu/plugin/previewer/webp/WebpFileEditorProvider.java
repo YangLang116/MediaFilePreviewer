@@ -28,7 +28,7 @@ public class WebpFileEditorProvider implements FileEditorProvider {
 
     @Override
     public @NotNull FileEditor createEditor(@NotNull Project project, @NotNull VirtualFile virtualFile) {
-        return new WebpFileEditor(EDITOR_NAME, virtualFile);
+        return new WebpFileEditor(EDITOR_NAME, virtualFile, EXTENSION);
     }
 
     @Override

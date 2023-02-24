@@ -1,36 +1,36 @@
 package com.xtu.plugin.previewer.common;
 
+import com.intellij.openapi.application.Application;
+import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.fileEditor.FileEditor;
 import com.intellij.openapi.fileEditor.FileEditorLocation;
 import com.intellij.openapi.fileEditor.FileEditorState;
-import com.intellij.openapi.ui.Messages;
 import com.intellij.openapi.util.UserDataHolderBase;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.ui.JBColor;
 import com.intellij.util.ui.UIUtil;
 import com.xtu.plugin.previewer.common.ui.ImagePanel;
 import com.xtu.plugin.previewer.common.utils.ImageUtils;
-import com.xtu.plugin.previewer.common.utils.LogUtils;
 import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import javax.imageio.ImageReader;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.image.BufferedImage;
 import java.beans.PropertyChangeListener;
 
 public abstract class BaseBufferImageEditor extends UserDataHolderBase implements FileEditor {
 
     private final String name;
-    private final String imageType;
     private final VirtualFile file;
-    private BufferedImage[] imageList;
+    private final String imageType;
+    private ImagePanel imagePanel;
 
-    public BaseBufferImageEditor(@NotNull String name, @NotNull String imageType, @NotNull VirtualFile file) {
+    public BaseBufferImageEditor(@NotNull String name, @NotNull VirtualFile file, @NotNull String imageType) {
         this.name = name;
-        this.imageType = imageType;
         this.file = file;
+        this.imageType = imageType;
     }
 
     @Override
@@ -42,35 +42,18 @@ public abstract class BaseBufferImageEditor extends UserDataHolderBase implement
     }
 
     private void loadImageAsync(@NotNull JPanel rootContainer) {
-        if (this.imageList != null) {
-            displayImageList(rootContainer);
+        if (this.imagePanel != null) {
+            rootContainer.add(this.imagePanel, BorderLayout.CENTER);
             return;
         }
-        new Thread(() -> {
-            this.imageList = ImageUtils.readFile(file);
-            SwingUtilities.invokeLater(() -> displayImageList(rootContainer));
-        }).start();
-    }
-
-    private void displayImageList(@NotNull JPanel rootContainer) {
-        if (this.imageList == null || this.imageList.length == 0) {
-            JComponent errorPanel = getErrorPanel();
-            rootContainer.add(errorPanel, BorderLayout.CENTER);
-        } else {
-            LogUtils.info(imageType + " imageList size: " + this.imageList.length);
-            BufferedImage bufferedImage = this.imageList[0];
-            String imageInfo = ImageUtils.getImageInfo(imageType, bufferedImage, file);
-            ImagePanel imagePanel = new ImagePanel(bufferedImage, imageInfo);
-            rootContainer.add(imagePanel, BorderLayout.CENTER);
-        }
-    }
-
-    private JComponent getErrorPanel() {
-        String errorText = String.format("Fail to load %s Image", imageType);
-        JLabel errorLabel = new JLabel(errorText, Messages.getErrorIcon(), SwingConstants.CENTER);
-        JPanel errorPanel = new JPanel(new BorderLayout());
-        errorPanel.add(errorLabel, BorderLayout.CENTER);
-        return errorPanel;
+        Application application = ApplicationManager.getApplication();
+        application.executeOnPooledThread(() -> {
+            ImageReader imageReader = ImageUtils.getTwelveMonkeysRead(imageType, file);
+            application.invokeLater(() -> {
+                this.imagePanel = new ImagePanel(imageType, file, imageReader);
+                rootContainer.add(this.imagePanel, BorderLayout.CENTER);
+            });
+        });
     }
 
     @Override
@@ -120,12 +103,6 @@ public abstract class BaseBufferImageEditor extends UserDataHolderBase implement
 
     @Override
     public void dispose() {
-        if (this.imageList != null) {
-            LogUtils.info(imageType + " imageList clear");
-            for (BufferedImage bufferedImage : this.imageList) {
-                bufferedImage.getGraphics().dispose();
-            }
-            this.imageList = null;
-        }
+        if (this.imagePanel != null) this.imagePanel.dispose();
     }
 }

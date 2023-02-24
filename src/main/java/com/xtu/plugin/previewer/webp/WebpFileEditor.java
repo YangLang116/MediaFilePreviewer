@@ -6,9 +6,8 @@ import org.jetbrains.annotations.NotNull;
 
 public class WebpFileEditor extends BaseBufferImageEditor {
 
-
-    public WebpFileEditor(@NotNull String name, @NotNull VirtualFile file) {
-        super(name, "WebP", file);
+    public WebpFileEditor(@NotNull String name, @NotNull VirtualFile file, @NotNull String imageType) {
+        super(name, file, imageType);
     }
 
 }
