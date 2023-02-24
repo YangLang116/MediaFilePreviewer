@@ -9,6 +9,7 @@
     <depends>com.intellij.javafx</depends>
 
     <extensions defaultExtensionNs="com.intellij">
+        <applicationConfigurable parentId="tools" instance="com.xtu.plugin.configuration.SettingsConfiguration"/>
         <!--svga-->
         <fileEditorProvider implementation="com.xtu.plugin.previewer.svga.SvgaFileEditorProvider"/>
         <!--lottie-->

@@ -3,6 +3,13 @@
 ## [Coming]
 ### Changed
 
+## [1.0.9] - 2023-02-24
+### Changed
+
+## [1.0.9] - 2023-02-24
+### Changed
+- support webp anim
+
 ## [1.0.8] - 2023-02-19
 ### Changed
 - support webp

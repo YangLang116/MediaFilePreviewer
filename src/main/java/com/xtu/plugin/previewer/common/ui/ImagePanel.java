@@ -5,6 +5,7 @@ import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.ui.Messages;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.ui.components.JBBox;
+import com.xtu.plugin.configuration.SettingsConfiguration;
 import com.xtu.plugin.previewer.common.utils.ImageUtils;
 import com.xtu.plugin.previewer.common.utils.LogUtils;
 import org.jetbrains.annotations.NotNull;
@@ -46,12 +47,17 @@ public class ImagePanel extends JPanel {
             ImageComponent imageComponent = new ImageComponent();
             imageComponent.registerKeyBoardEvent();
             add(imageComponent, BorderLayout.CENTER);
+            boolean autoPlay = SettingsConfiguration.isAutoPlay();
             Application application = ApplicationManager.getApplication();
-            application.executeOnPooledThread(() -> refreshImageDisplayAsync(imageInfoLabel, imageComponent, imageType, originFile, imageReader));
+            application.executeOnPooledThread(() -> refreshImageDisplayAsync(imageInfoLabel, imageComponent,
+                    imageType, originFile,
+                    imageReader, autoPlay));
         }
     }
 
-    private void refreshImageDisplayAsync(@NotNull JLabel labelComponent, @NotNull ImageComponent imageComponent, @NotNull String imageType, @NotNull VirtualFile originFile, @NotNull ImageReader imageReader) {
+    private void refreshImageDisplayAsync(@NotNull JLabel labelComponent, @NotNull ImageComponent imageComponent,
+                                          @NotNull String imageType, @NotNull VirtualFile originFile,
+                                          @NotNull ImageReader imageReader, boolean autoPlay) {
         BufferedImage firstFrameImage = ImageUtils.loadImage(this.imageReader, 0);
         if (firstFrameImage == null) return;
         //刷新首帧数据
@@ -61,6 +67,7 @@ public class ImagePanel extends JPanel {
             labelComponent.setText(imageInfo);
             imageComponent.setImage(firstFrameImage);
         });
+        if (!autoPlay) return;
         //刷新帧数
         try {
             int frameNum = imageReader.getNumImages(true);
