@@ -23,6 +23,7 @@ import java.util.TimerTask;
 public class ImagePanel extends JPanel {
 
     private Timer timer;
+    private boolean isDisposed = false;
     private final ImageReader imageReader;
 
     public ImagePanel(@NotNull String imageType, @NotNull VirtualFile originFile, @Nullable ImageReader imageReader) {
@@ -50,11 +51,7 @@ public class ImagePanel extends JPanel {
         }
     }
 
-    private void refreshImageDisplayAsync(@NotNull JLabel labelComponent,
-                                          @NotNull ImageComponent imageComponent,
-                                          @NotNull String imageType,
-                                          @NotNull VirtualFile originFile,
-                                          @NotNull ImageReader imageReader) {
+    private void refreshImageDisplayAsync(@NotNull JLabel labelComponent, @NotNull ImageComponent imageComponent, @NotNull String imageType, @NotNull VirtualFile originFile, @NotNull ImageReader imageReader) {
         BufferedImage firstFrameImage = ImageUtils.loadImage(this.imageReader, 0);
         if (firstFrameImage == null) return;
         //刷新首帧数据
@@ -75,17 +72,19 @@ public class ImagePanel extends JPanel {
 
                 @Override
                 public void run() {
+                    if (isDisposed) return;
                     frameIndex = (frameIndex + 1) % frameNum;
                     BufferedImage frameImage = ImageUtils.loadImage(imageReader, frameIndex);
                     if (frameImage != null) application.invokeLater(() -> imageComponent.setImage(frameImage));
                 }
-            }, 0, 16);
+            }, 0, 30);
         } catch (Throwable e) {
             LogUtils.info("ImagePanel refreshImageDisplayAsync: " + e.getMessage());
         }
     }
 
     public void dispose() {
+        this.isDisposed = true;
         if (timer != null) timer.cancel();
         if (imageReader != null) ImageUtils.dispose(imageReader);
     }
@@ -130,6 +129,7 @@ public class ImagePanel extends JPanel {
         @Override
         public void paint(final Graphics g) {
             super.paint(g);
+            if (this.imageRef == null) return;
             BufferedImage bufferedImage = this.imageRef.get();
             if (bufferedImage == null) return;
             final int imgWidth = (int) (preferredSize.width * curScale);
