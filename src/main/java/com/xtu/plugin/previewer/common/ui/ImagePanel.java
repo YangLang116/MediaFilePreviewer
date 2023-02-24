@@ -81,10 +81,9 @@ public class ImagePanel extends JPanel {
                 }
             }, 0, 16);
         } catch (Throwable e) {
-            LogUtils.error("ImagePanel refreshImageDisplayAsync: " + e.getMessage());
+            LogUtils.info("ImagePanel refreshImageDisplayAsync: " + e.getMessage());
         }
     }
-
 
     public void dispose() {
         if (timer != null) timer.cancel();

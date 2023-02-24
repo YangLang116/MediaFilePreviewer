@@ -1,43 +1,24 @@
 package com.xtu.plugin.previewer.svg;
 
-import com.intellij.openapi.fileEditor.FileEditor;
-import com.intellij.openapi.fileEditor.FileEditorPolicy;
-import com.intellij.openapi.fileEditor.FileEditorProvider;
-import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
-import com.xtu.plugin.previewer.common.utils.ImageUtils;
-import org.apache.commons.lang.StringUtils;
-import org.jetbrains.annotations.NonNls;
+import com.xtu.plugin.previewer.common.BaseBufferImageEditor;
+import com.xtu.plugin.previewer.common.BaseBufferImageEditorProvider;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Locale;
-
-public class SVGFileEditorProvider implements FileEditorProvider {
-
-    private static final String EXTENSION = "svg";
-    private static final String EDITOR_NAME = "SVG Editor";
-
+public class SVGFileEditorProvider extends BaseBufferImageEditorProvider {
 
     @Override
-    public boolean accept(@NotNull Project project, @NotNull VirtualFile virtualFile) {
-        String extension = virtualFile.getExtension();
-        if (extension == null) return false;
-        if (!StringUtils.equals(extension.toLowerCase(Locale.ROOT), EXTENSION)) return false;
-        return ImageUtils.checkSupport(EXTENSION);
+    public String getEditorName() {
+        return "SVG Editor";
     }
 
     @Override
-    public @NotNull FileEditor createEditor(@NotNull Project project, @NotNull VirtualFile virtualFile) {
-        return new SVGFileEditor(EDITOR_NAME, virtualFile, EXTENSION);
+    public String getSupportExtension() {
+        return "svg";
     }
 
     @Override
-    public @NotNull @NonNls String getEditorTypeId() {
-        return EDITOR_NAME;
-    }
-
-    @Override
-    public @NotNull FileEditorPolicy getPolicy() {
-        return FileEditorPolicy.PLACE_BEFORE_DEFAULT_EDITOR;
+    public BaseBufferImageEditor getEditor(@NotNull String name, @NotNull VirtualFile file, @NotNull String imageType) {
+        return new SVGFileEditor(name, file, imageType);
     }
 }

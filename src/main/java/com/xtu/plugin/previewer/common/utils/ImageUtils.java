@@ -67,7 +67,7 @@ public class ImageUtils {
             return reader;
         } catch (Throwable e) {
             CloseUtils.close(stream);
-            LogUtils.error("ImageUtils loadInputWithReader: " + e.getMessage());
+            LogUtils.info("ImageUtils loadInputWithReader: " + e.getMessage());
             return null;
         }
     }
@@ -77,7 +77,7 @@ public class ImageUtils {
         try {
             return reader.read(imageIndex);
         } catch (Throwable e) {
-            LogUtils.error("ImageUtils loadImage: " + e.getMessage());
+            LogUtils.info("ImageUtils loadImage: " + e.getMessage());
             return null;
         }
     }
