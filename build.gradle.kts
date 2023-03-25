@@ -124,8 +124,8 @@ tasks {
     }
 
     runIde {
-        jbrVersion.set("11_0_11b1341.60")
-        ideDir.set(file("/Applications/Android Studio.app/Contents"))
+        jbrVersion.set("11_0_10b1145.115")
+        ideDir.set(file(properties("idePath")))
     }
 }
 
