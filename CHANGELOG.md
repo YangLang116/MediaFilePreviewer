@@ -3,8 +3,12 @@
 ## [Coming]
 ### Changed
 
-## [1.0.9] - 2023-02-24
+## [1.1.0] - 2023-03-25
 ### Changed
+
+## [1.1.0] - 2023-03-25
+### Changed
+- optimize playback effects
 
 ## [1.0.9] - 2023-02-24
 ### Changed

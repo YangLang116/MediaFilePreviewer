@@ -13,7 +13,7 @@ import java.util.Objects;
 
 public final class SettingsConfiguration implements SearchableConfigurable {
 
-    private static final String KEY_AUTO_PLAY = "mp_auto_play";
+    private static final String KEY_AUTO_PLAY = "mp_play";
     private static final String KEY_PLAY_SPEED = "mp_play_speed";
 
     private JPanel rootPanel;
@@ -58,7 +58,7 @@ public final class SettingsConfiguration implements SearchableConfigurable {
 
     public static boolean isAutoPlay() {
         PropertiesComponent propertiesComponent = PropertiesComponent.getInstance();
-        return propertiesComponent.getBoolean(KEY_AUTO_PLAY, false);
+        return propertiesComponent.getBoolean(KEY_AUTO_PLAY, true);
     }
 
     public static String getPlaySpeed() {
