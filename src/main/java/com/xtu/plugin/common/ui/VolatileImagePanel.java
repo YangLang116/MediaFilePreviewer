@@ -72,7 +72,7 @@ public class VolatileImagePanel extends JPanel {
         try {
             return imageReader.getNumImages(true);
         } catch (Exception e) {
-            LogUtils.error("VolatileImagePanel initFirstFrameInThreadPool: " + e.getMessage());
+            LogUtils.info("VolatileImagePanel initFirstFrameInThreadPool: " + e.getMessage());
             return 1;
         }
     }
@@ -86,7 +86,7 @@ public class VolatileImagePanel extends JPanel {
                 index = (index + 1) % imageNum;
             }
         } catch (Exception e) {
-            LogUtils.error("VolatileImagePanel processBufferImageInThreadPool: " + e.getMessage());
+            LogUtils.info("VolatileImagePanel processBufferImageInThreadPool: " + e.getMessage());
         }
     }
 
@@ -98,7 +98,7 @@ public class VolatileImagePanel extends JPanel {
                 flushImageToVolatileGraphics(bufferedImage);
             }
         } catch (Exception e) {
-            LogUtils.error("VolatileImagePanel repaintByIntervalInThreadPool: " + e.getMessage());
+            LogUtils.info("VolatileImagePanel repaintByIntervalInThreadPool: " + e.getMessage());
         }
     }
 
@@ -136,7 +136,7 @@ public class VolatileImagePanel extends JPanel {
         try {
             this.image = config.createCompatibleVolatileImage(width, height, new ImageCapabilities(true), Transparency.TRANSLUCENT);
         } catch (Exception e) {
-            LogUtils.error("VolatileImagePanel initVolatileImage: " + e.getMessage());
+            LogUtils.info("VolatileImagePanel initVolatileImage: " + e.getMessage());
             this.image = config.createCompatibleVolatileImage(width, height, Transparency.TRANSLUCENT);
         }
         this.image.validate(null);
