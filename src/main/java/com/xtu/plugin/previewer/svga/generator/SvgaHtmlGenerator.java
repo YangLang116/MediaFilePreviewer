@@ -5,8 +5,8 @@ import com.intellij.openapi.application.ReadAction;
 import com.intellij.openapi.vfs.VfsUtil;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.util.ui.UIUtil;
-import com.xtu.plugin.previewer.common.utils.FileUtils;
-import com.xtu.plugin.previewer.common.OnResultListener;
+import com.xtu.plugin.common.utils.FileUtils;
+import com.xtu.plugin.common.OnResultListener;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Base64;

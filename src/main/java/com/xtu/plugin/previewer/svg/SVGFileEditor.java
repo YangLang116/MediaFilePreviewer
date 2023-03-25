@@ -1,7 +1,7 @@
 package com.xtu.plugin.previewer.svg;
 
 import com.intellij.openapi.vfs.VirtualFile;
-import com.xtu.plugin.previewer.common.BaseBufferImageEditor;
+import com.xtu.plugin.common.BaseBufferImageEditor;
 import org.jetbrains.annotations.NotNull;
 
 public class SVGFileEditor extends BaseBufferImageEditor {

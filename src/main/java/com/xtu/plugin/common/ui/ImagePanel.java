@@ -1,4 +1,4 @@
-package com.xtu.plugin.previewer.common.ui;
+package com.xtu.plugin.common.ui;
 
 import com.intellij.openapi.application.Application;
 import com.intellij.openapi.application.ApplicationManager;
@@ -6,8 +6,8 @@ import com.intellij.openapi.ui.Messages;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.ui.components.JBBox;
 import com.xtu.plugin.configuration.SettingsConfiguration;
-import com.xtu.plugin.previewer.common.utils.ImageUtils;
-import com.xtu.plugin.previewer.common.utils.LogUtils;
+import com.xtu.plugin.common.utils.ImageUtils;
+import com.xtu.plugin.common.utils.LogUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 

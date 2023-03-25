@@ -1,4 +1,4 @@
-package com.xtu.plugin.previewer.common.ui;
+package com.xtu.plugin.common.ui;
 
 import com.intellij.ui.javafx.JavaFxHtmlPanel;
 import javafx.application.Platform;

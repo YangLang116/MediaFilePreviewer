@@ -1,4 +1,4 @@
-package com.xtu.plugin.previewer.common.utils;
+package com.xtu.plugin.common.utils;
 
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.openapi.vfs.VirtualFile;

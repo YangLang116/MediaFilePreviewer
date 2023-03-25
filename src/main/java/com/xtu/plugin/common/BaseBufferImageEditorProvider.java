@@ -1,11 +1,11 @@
-package com.xtu.plugin.previewer.common;
+package com.xtu.plugin.common;
 
 import com.intellij.openapi.fileEditor.FileEditor;
 import com.intellij.openapi.fileEditor.FileEditorPolicy;
 import com.intellij.openapi.fileEditor.FileEditorProvider;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
-import com.xtu.plugin.previewer.common.utils.ImageUtils;
+import com.xtu.plugin.common.utils.ImageUtils;
 import org.apache.commons.lang.StringUtils;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;

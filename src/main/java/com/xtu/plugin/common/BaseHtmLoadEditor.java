@@ -1,4 +1,4 @@
-package com.xtu.plugin.previewer.common;
+package com.xtu.plugin.common;
 
 import com.intellij.openapi.fileEditor.FileEditor;
 import com.intellij.openapi.fileEditor.FileEditorLocation;
@@ -9,8 +9,8 @@ import com.intellij.ui.JBColor;
 import com.intellij.ui.jcef.JBCefApp;
 import com.intellij.ui.jcef.JBCefBrowser;
 import com.intellij.util.ui.UIUtil;
-import com.xtu.plugin.previewer.common.ui.MyFxHtmlPanel;
-import com.xtu.plugin.previewer.common.utils.LogUtils;
+import com.xtu.plugin.common.ui.MyFxHtmlPanel;
+import com.xtu.plugin.common.utils.LogUtils;
 import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;

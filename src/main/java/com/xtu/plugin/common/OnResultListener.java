@@ -1,4 +1,4 @@
-package com.xtu.plugin.previewer.common;
+package com.xtu.plugin.common;
 
 import org.jetbrains.annotations.NotNull;
 

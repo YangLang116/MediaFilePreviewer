@@ -1,7 +1,7 @@
 package com.xtu.plugin.previewer.lottie;
 
 import com.intellij.openapi.vfs.VirtualFile;
-import com.xtu.plugin.previewer.common.BaseHtmLoadEditor;
+import com.xtu.plugin.common.BaseHtmLoadEditor;
 import com.xtu.plugin.previewer.lottie.generator.LottieHtmlGenerator;
 import org.jetbrains.annotations.NotNull;
 
