@@ -12,7 +12,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Locale;
 
-public abstract class BaseBufferImageEditorProvider implements FileEditorProvider {
+public abstract class BaseVolatileImageEditorProvider implements FileEditorProvider {
 
     public abstract String getEditorName();
 

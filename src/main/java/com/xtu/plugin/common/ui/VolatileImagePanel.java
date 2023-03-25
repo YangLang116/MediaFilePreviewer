@@ -63,9 +63,10 @@ public class VolatileImagePanel extends JPanel {
         if (!autoPlay) return;
         final int imageNum = getImageNum(imageReader);
         if (imageNum <= 1) return;
+        int playSpeed = Integer.parseInt(SettingsConfiguration.getPlaySpeed());
         this.bufferedImageQueue = new LinkedBlockingDeque<>(5);
         this.threadPoolExecutor.submit(() -> processBufferImageInThreadPool(this.threadPoolExecutor, imageReader, imageNum, bufferedImageQueue));
-        this.threadPoolExecutor.submit(() -> repaintByIntervalInThreadPool(this.threadPoolExecutor));
+        this.threadPoolExecutor.submit(() -> repaintByIntervalInThreadPool(this.threadPoolExecutor, playSpeed));
     }
 
     private int getImageNum(@NotNull ImageReader imageReader) {
@@ -90,10 +91,10 @@ public class VolatileImagePanel extends JPanel {
         }
     }
 
-    private void repaintByIntervalInThreadPool(@NotNull ExecutorService threadPoolExecutor) {
+    private void repaintByIntervalInThreadPool(@NotNull ExecutorService threadPoolExecutor, int sleepTime) {
         try {
             while (!threadPoolExecutor.isShutdown()) {
-                Thread.sleep(50);
+                Thread.sleep(sleepTime);
                 BufferedImage bufferedImage = bufferedImageQueue.take();
                 flushImageToVolatileGraphics(bufferedImage);
             }

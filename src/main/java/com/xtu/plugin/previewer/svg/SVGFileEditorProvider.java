@@ -1,11 +1,10 @@
 package com.xtu.plugin.previewer.svg;
 
 import com.intellij.openapi.vfs.VirtualFile;
-import com.xtu.plugin.common.BaseBufferImageEditor;
-import com.xtu.plugin.common.BaseBufferImageEditorProvider;
+import com.xtu.plugin.common.BaseVolatileImageEditorProvider;
 import org.jetbrains.annotations.NotNull;
 
-public class SVGFileEditorProvider extends BaseBufferImageEditorProvider {
+public class SVGFileEditorProvider extends BaseVolatileImageEditorProvider {
 
     @Override
     public String getEditorName() {
@@ -18,7 +17,7 @@ public class SVGFileEditorProvider extends BaseBufferImageEditorProvider {
     }
 
     @Override
-    public BaseBufferImageEditor getEditor(@NotNull String name, @NotNull VirtualFile file, @NotNull String fileExtension) {
+    public SVGFileEditor getEditor(@NotNull String name, @NotNull VirtualFile file, @NotNull String fileExtension) {
         return new SVGFileEditor(name, file, fileExtension);
     }
 }

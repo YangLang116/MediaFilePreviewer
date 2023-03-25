@@ -1,10 +1,10 @@
 package com.xtu.plugin.previewer.webp;
 
 import com.intellij.openapi.vfs.VirtualFile;
-import com.xtu.plugin.common.BaseBufferImageEditorProvider;
+import com.xtu.plugin.common.BaseVolatileImageEditorProvider;
 import org.jetbrains.annotations.NotNull;
 
-public class WebpFileEditorProvider extends BaseBufferImageEditorProvider {
+public class WebpFileEditorProvider extends BaseVolatileImageEditorProvider {
 
     @Override
     public String getEditorName() {
