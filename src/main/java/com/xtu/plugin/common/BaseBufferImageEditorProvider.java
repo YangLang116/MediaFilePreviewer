@@ -18,7 +18,7 @@ public abstract class BaseBufferImageEditorProvider implements FileEditorProvide
 
     public abstract String getSupportExtension();
 
-    public abstract BaseBufferImageEditor getEditor(@NotNull String name, @NotNull VirtualFile file, @NotNull String imageType);
+    public abstract FileEditor getEditor(@NotNull String name, @NotNull VirtualFile file, @NotNull String imageType);
 
     @Override
     public boolean accept(@NotNull Project project, @NotNull VirtualFile virtualFile) {

@@ -24,13 +24,13 @@ public abstract class BaseBufferImageEditor extends UserDataHolderBase implement
 
     private final String name;
     private final VirtualFile file;
-    private final String imageType;
+    private final String fileExtension;
     private ImagePanel imagePanel;
 
-    public BaseBufferImageEditor(@NotNull String name, @NotNull VirtualFile file, @NotNull String imageType) {
+    public BaseBufferImageEditor(@NotNull String name, @NotNull VirtualFile file, @NotNull String fileExtension) {
         this.name = name;
         this.file = file;
-        this.imageType = imageType;
+        this.fileExtension = fileExtension;
     }
 
     @Override
@@ -48,9 +48,9 @@ public abstract class BaseBufferImageEditor extends UserDataHolderBase implement
         }
         Application application = ApplicationManager.getApplication();
         application.executeOnPooledThread(() -> {
-            ImageReader imageReader = ImageUtils.getTwelveMonkeysRead(imageType, file);
+            ImageReader imageReader = ImageUtils.getTwelveMonkeysRead(fileExtension, file);
             application.invokeLater(() -> {
-                this.imagePanel = new ImagePanel(imageType, file, imageReader);
+                this.imagePanel = new ImagePanel(fileExtension, file, imageReader);
                 rootContainer.add(this.imagePanel, BorderLayout.CENTER);
             });
         });

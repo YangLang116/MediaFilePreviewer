@@ -18,7 +18,7 @@ public class SVGFileEditorProvider extends BaseBufferImageEditorProvider {
     }
 
     @Override
-    public BaseBufferImageEditor getEditor(@NotNull String name, @NotNull VirtualFile file, @NotNull String imageType) {
-        return new SVGFileEditor(name, file, imageType);
+    public BaseBufferImageEditor getEditor(@NotNull String name, @NotNull VirtualFile file, @NotNull String fileExtension) {
+        return new SVGFileEditor(name, file, fileExtension);
     }
 }
