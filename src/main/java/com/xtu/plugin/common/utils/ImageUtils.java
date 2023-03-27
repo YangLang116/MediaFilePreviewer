@@ -36,7 +36,7 @@ public class ImageUtils {
         return false;
     }
 
-    public static String getImageInfo(String fileExtension, @NotNull BufferedImage image, @NotNull VirtualFile file) {
+    public static String getImageInfo(@NotNull BufferedImage image, @NotNull VirtualFile file, String fileExtension) {
         final int width = image.getWidth();
         final int height = image.getHeight();
         final ColorModel colorModel = image.getColorModel();
