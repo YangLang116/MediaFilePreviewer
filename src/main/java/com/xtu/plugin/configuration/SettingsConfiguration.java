@@ -8,7 +8,7 @@ import javax.swing.*;
 
 public final class SettingsConfiguration implements SearchableConfigurable {
 
-    private static final String KEY_AUTO_PLAY = "mp_play";
+    private static final String KEY_AUTO_PLAY = "mp_auto_play";
 
     private JPanel rootPanel;
     private JCheckBox isAutoPlayBox;
@@ -43,7 +43,7 @@ public final class SettingsConfiguration implements SearchableConfigurable {
     @Override
     public void apply() {
         PropertiesComponent propertiesComponent = PropertiesComponent.getInstance();
-        propertiesComponent.setValue(KEY_AUTO_PLAY, isAutoPlayBox.isSelected());
+        propertiesComponent.setValue(KEY_AUTO_PLAY, isAutoPlayBox.isSelected(), true);
     }
 
     public static boolean isAutoPlay() {
