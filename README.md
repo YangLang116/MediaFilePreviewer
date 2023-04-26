@@ -13,6 +13,9 @@ An IDEA Plugin for Media File to Preview, likes svga、lottie...
 ## 插件安装
 > 插件已上传官方Plugins仓库，可搜索 MediaFilePreviewer 下载
 
+##插件说明  
+> 如果`IDEA`在预览文件时，出现卡死现象，需切换jbr版本，具体请参考：https://www.jianshu.com/p/68056562d1c4
+
 ## 功能清单
 - 支持SVG 预览
 - 支持WebP 预览
