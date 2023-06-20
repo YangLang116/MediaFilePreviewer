@@ -3,6 +3,10 @@
 ## [Coming]
 ### Changed
 
+## [1.1.2] - 2023-06-20
+### Changed
+- suggestion & feedback
+
 ## [1.1.1] - 2023-03-27
 ### Changed
 - optimize playback effects

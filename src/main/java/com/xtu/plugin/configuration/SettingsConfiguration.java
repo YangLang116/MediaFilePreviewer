@@ -2,9 +2,13 @@ package com.xtu.plugin.configuration;
 
 import com.intellij.ide.util.PropertiesComponent;
 import com.intellij.openapi.options.SearchableConfigurable;
+import com.xtu.plugin.advice.AdviceDialog;
+import com.xtu.plugin.common.utils.WindowUtils;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public final class SettingsConfiguration implements SearchableConfigurable {
 
@@ -12,6 +16,7 @@ public final class SettingsConfiguration implements SearchableConfigurable {
 
     private JPanel rootPanel;
     private JCheckBox isAutoPlayBox;
+    private JLabel adviceLabel;
 
     @NotNull
     @Override
@@ -33,6 +38,14 @@ public final class SettingsConfiguration implements SearchableConfigurable {
     @Override
     public void reset() {
         this.isAutoPlayBox.setSelected(isAutoPlay());
+        this.adviceLabel.setText("<html><u>建议与反馈</u></html>");
+        this.adviceLabel.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                JComponent rootPanel = WindowUtils.getVisibleRootPanel();
+                AdviceDialog.show(rootPanel);
+            }
+        });
     }
 
     @Override
