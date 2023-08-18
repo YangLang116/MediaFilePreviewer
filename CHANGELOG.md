@@ -3,6 +3,11 @@
 ## [Coming]
 ### Changed
 
+## [1.1.3] - 2023-08-18
+### Changed
+- optimize advice dialog
+- add `report error`
+
 ## [1.1.2] - 2023-06-20
 ### Changed
 - suggestion & feedback

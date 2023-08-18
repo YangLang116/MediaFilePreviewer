@@ -1,14 +1,14 @@
-<!-- Plugin Configuration File. Read more: https://plugins.jetbrains.com/docs/intellij/plugin-configuration-file.html -->
 <idea-plugin>
     <id>com.xtu.plugins.reviewer</id>
     <name>MediaFilePreviewer</name>
     <vendor email="yanglang116@gmail.com">yanglang116@gmail.com</vendor>
-
     <idea-version since-build="211"/>
     <depends>com.intellij.modules.platform</depends>
     <depends>com.intellij.javafx</depends>
-
     <extensions defaultExtensionNs="com.intellij">
+        <!--error report-->
+        <errorHandler implementation="com.xtu.plugin.reporter.PreviewErrorReporter"/>
+        <!--configuration-->
         <applicationConfigurable parentId="tools" instance="com.xtu.plugin.configuration.SettingsConfiguration"/>
         <!--svga-->
         <fileEditorProvider implementation="com.xtu.plugin.previewer.svga.SvgaFileEditorProvider"/>
@@ -24,5 +24,4 @@
                 class="listener.AppLifecycleListenerImpl"
                 topic="com.intellij.ide.AppLifecycleListener"/>
     </applicationListeners>
-
 </idea-plugin>
