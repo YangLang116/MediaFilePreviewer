@@ -1,5 +1,5 @@
 <!-- Plugin description -->
-An IDEA Plugin for Media File to Preview, likes svga、lottie...
+An IDEA Plugin for Media File to Preview, likes svg、svga、lottie、webp...
 <!-- Plugin description end -->
 
 ## MediaFilePreviewer 致力于加强IDEA对媒体文件的支持
