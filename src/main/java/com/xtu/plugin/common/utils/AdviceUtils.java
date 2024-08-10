@@ -8,11 +8,13 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+@SuppressWarnings("HttpUrlsUsage")
 public class AdviceUtils {
 
     private static final String APP_KEY = "MediaFilePreviewer";
-    @SuppressWarnings("HttpUrlsUsage")
+
     private static final String sURL = "http://iflutter.toolu.cn/api/advice";
+
     public static void submitData(String title, String content) {
         JSONObject jsonData = new JSONObject();
         jsonData.put("title", title);

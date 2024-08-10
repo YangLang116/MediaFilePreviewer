@@ -1,46 +1,47 @@
 package com.xtu.plugin.previewer.svga.generator;
 
-import com.intellij.openapi.application.ApplicationManager;
-import com.intellij.openapi.application.ReadAction;
+import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VfsUtil;
 import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.util.ui.UIUtil;
+import com.intellij.ui.JBColor;
+import com.xtu.plugin.common.utils.ColorUtils;
 import com.xtu.plugin.common.utils.FileUtils;
-import com.xtu.plugin.common.OnResultListener;
+import com.xtu.plugin.previewer.HtmlGenerator;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Base64;
 
 
 //SVGA Html生成器
 @SuppressWarnings("SpellCheckingInspection")
-public class SvgaHtmlGenerator {
+public class SvgaHtmlGenerator extends HtmlGenerator {
 
-    public static void generate(@NotNull VirtualFile svgaFile,
-                                @NotNull OnResultListener listener) {
-        ReadAction.run(() -> readAndGenerate(svgaFile, listener));
+    public SvgaHtmlGenerator(@NotNull Project project,
+                             @NotNull VirtualFile file,
+                             @NotNull HtmlGenerator.OnHTMLGenerateListener readyListener) {
+        super(project, file, readyListener);
     }
 
-    private static void readAndGenerate(@NotNull VirtualFile svgaFile,
-                                        @NotNull OnResultListener listener) {
+    @Override
+    public @Nullable String createHtml() {
         try {
-            String svgaContent = readSvgaContent(VfsUtil.loadBytes(svgaFile));
-            String htmlContent = FileUtils.readTextFromResource("html/svga/index.html");
-            String cssContent = FileUtils.readTextFromResource("html/svga/index.css");
-            String jsZipMinContent = FileUtils.readTextFromResource("html/svga/libs/jszip.min.js");
-            String jsZipUtilsContent = FileUtils.readTextFromResource("html/svga/libs/jszip-utils.min.js");
-            String jsSvgaContent = FileUtils.readTextFromResource("html/svga/libs/svga.min.js");
-            String jsContent = FileUtils.readTextFromResource("html/svga/index.js");
-            //拼装html内容
-            String result = htmlContent.replace("{style_placeholder}", cssContent)
-                    .replace("{script_placeholder}",
-                            jsZipMinContent + " " + jsZipUtilsContent + " " + jsSvgaContent + " " + jsContent)
-                    .replace("{body_color}", UIUtil.isUnderDarcula() ? "black" : "white")
-                    .replace("{main_color}", UIUtil.isUnderDarcula() ? "white" : "black")
+            byte[] fileContent = VfsUtil.loadBytes(getFile());
+            String svgaContent = readSvgaContent(fileContent);
+            String htmlContent = FileUtils.loadTextFromResource("html/svga/index.html");
+            String cssContent = FileUtils.loadTextFromResource("html/svga/index.css");
+            String jsZipMinContent = FileUtils.loadTextFromResource("html/svga/libs/jszip.min.js");
+            String jsZipUtilsContent = FileUtils.loadTextFromResource("html/svga/libs/jszip-utils.min.js");
+            String jsSvgaContent = FileUtils.loadTextFromResource("html/svga/libs/svga.min.js");
+            String jsContent = FileUtils.loadTextFromResource("html/svga/index.js");
+
+            return htmlContent.replace("{style_placeholder}", cssContent)
+                    .replace("{script_placeholder}", jsZipMinContent + " " + jsZipUtilsContent + " " + jsSvgaContent + " " + jsContent)
+                    .replace("{body_color}", ColorUtils.toString(JBColor.background()))
+                    .replace("{main_color}", ColorUtils.toString(JBColor.foreground()))
                     .replace("{file_content_placeholder}", svgaContent);
-            ApplicationManager.getApplication().invokeLater(() -> listener.onResult(result));
         } catch (Exception e) {
-            e.printStackTrace();
+            return null;
         }
     }
 

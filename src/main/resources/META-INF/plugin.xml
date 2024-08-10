@@ -8,20 +8,21 @@
     <extensions defaultExtensionNs="com.intellij">
         <!--error report-->
         <errorHandler implementation="com.xtu.plugin.reporter.PreviewErrorReporter"/>
+        <!--media file icon-->
+        <projectViewNodeDecorator implementation="com.xtu.plugin.decorator.MediaFileDecorator"/>
         <!--configuration-->
         <applicationConfigurable parentId="tools" instance="com.xtu.plugin.configuration.SettingsConfiguration"/>
-        <!--svga-->
-        <fileEditorProvider implementation="com.xtu.plugin.previewer.svga.SvgaFileEditorProvider"/>
-        <!--lottie-->
-        <fileEditorProvider implementation="com.xtu.plugin.previewer.lottie.LottieFileEditorProvider"/>
         <!--webp-->
         <fileEditorProvider implementation="com.xtu.plugin.previewer.webp.WebpFileEditorProvider"/>
         <!--svg-->
         <fileEditorProvider implementation="com.xtu.plugin.previewer.svg.SVGFileEditorProvider"/>
+        <!--svga-->
+        <fileEditorProvider implementation="com.xtu.plugin.previewer.svga.SvgaFileEditorProvider"/>
+        <!--lottie-->
+        <fileEditorProvider implementation="com.xtu.plugin.previewer.lottie.LottieFileEditorProvider"/>
     </extensions>
     <applicationListeners>
-        <listener
-                class="listener.AppLifecycleListenerImpl"
-                topic="com.intellij.ide.AppLifecycleListener"/>
+        <listener topic="com.intellij.ide.AppLifecycleListener"
+                  class="com.xtu.plugin.listener.AppLifecycleListenerImpl"/>
     </applicationListeners>
 </idea-plugin>

@@ -4,8 +4,8 @@ import com.intellij.openapi.ui.DialogWrapper;
 import com.intellij.openapi.ui.MessageType;
 import com.intellij.util.ui.JBUI;
 import com.xtu.plugin.common.utils.AdviceUtils;
+import com.xtu.plugin.common.utils.StringUtils;
 import com.xtu.plugin.common.utils.ToastUtil;
-import org.apache.commons.lang.StringUtils;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.Nullable;
 
