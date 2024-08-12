@@ -1,6 +1,7 @@
 package com.xtu.plugin.previewer.svga.generator;
 
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.util.text.Formats;
 import com.intellij.openapi.vfs.VfsUtil;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.ui.JBColor;
@@ -26,8 +27,10 @@ public class SvgaHtmlGenerator extends HtmlGenerator {
     @Override
     public @Nullable String createHtml() {
         try {
-            byte[] fileContent = VfsUtil.loadBytes(getFile());
+            VirtualFile animFile = getFile();
+            byte[] fileContent = VfsUtil.loadBytes(animFile);
             String svgaContent = readSvgaContent(fileContent);
+            String fileSize = Formats.formatFileSize(animFile.getLength()).toUpperCase();
             String htmlContent = FileUtils.loadTextFromResource("html/svga/index.html");
             String cssContent = FileUtils.loadTextFromResource("html/svga/index.css");
             String jsZipMinContent = FileUtils.loadTextFromResource("html/svga/libs/jszip.min.js");
@@ -39,7 +42,8 @@ public class SvgaHtmlGenerator extends HtmlGenerator {
                     .replace("{script_placeholder}", jsZipMinContent + " " + jsZipUtilsContent + " " + jsSvgaContent + " " + jsContent)
                     .replace("{body_color}", ColorUtils.toString(JBColor.background()))
                     .replace("{main_color}", ColorUtils.toString(JBColor.foreground()))
-                    .replace("{file_content_placeholder}", svgaContent);
+                    .replace("{file_content_placeholder}", svgaContent)
+                    .replace("{file_Size}", fileSize);
         } catch (Exception e) {
             return null;
         }

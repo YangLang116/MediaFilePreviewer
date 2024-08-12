@@ -49,12 +49,12 @@ function onPageLoad() {
 function fillCanvasInfo(videoItem) {
     function getImageInfo(videoItem) {
         let size = 0;
-        let infoList = []
+        const infoList = []
         for (let key in videoItem.images) {
             if (videoItem.images.hasOwnProperty(key)) {
-                let n = getImageSize(videoItem.images[key]);
+                const n = getImageSize(videoItem.images[key]);
                 size += n.width * n.height * 4;
-                infoList.push(''.concat(key, ' --- ', "{width: ", n.width.toString(), ", height: ", n.height.toString(), '}'))
+                infoList.push(key +  " --- { width: " + n.width + ", height: " + n.height + " }")
             }
         }
         return [convertSize(size), infoList];
@@ -69,35 +69,31 @@ function fillCanvasInfo(videoItem) {
     }
     function convertSize(size) {
         if (size < 1024) {
-            return size + 'B';
+            return size + ' B';
         } else if (size < 1024 * 1024) {
-            return Math.round(size * 1.0 / 1024) + 'K';
+            return (size * 1.0 / 1024).toFixed(2) + ' KB';
         } else {
-            return Math.round(size * 1.0 / 1024 / 1024) + 'M';
+            return (size * 1.0 / 1024 / 1024).toFixed(2) + ' MB';
         }
     }
-    const versionDiv = document.getElementById('version_info') //version
-    versionDiv.innerText = 'Version: '.concat(videoItem.version);
-    const fpsDiv = document.getElementById('fps_info') //fps
-    fpsDiv.innerText = 'FPS: '.concat(videoItem.FPS);
-    const frameDiv = document.getElementById('frame_info') //frame
-    frameDiv.innerText = 'Frames: '.concat(videoItem.frames);
-    const sizeDiv = document.getElementById('size_info') //size
-    let videoSize = videoItem.videoSize
-    sizeDiv.innerText = 'Size: '.concat(videoSize.width, ' x ', videoSize.height);
-    let imageInfo = getImageInfo(videoItem) //memory
-    const memoryDiv = document.getElementById('memory_info')
-    memoryDiv.innerText = 'Memory: '.concat(imageInfo[0]);
-    //images
-    const imageListDiv = document.getElementById('image-info-list')
-    let innerHTML = ''
-    for (let key in imageInfo[1]) {
+    document.getElementById('version_info').innerText = 'Version: ' + videoItem.version
+    document.getElementById('fps_info').innerText = 'FPS: ' + videoItem.FPS
+    document.getElementById('frame_info').innerText = 'Frames: ' + videoItem.frames
+    document.getElementById('duration_info').innerText = 'Duration: ' + (videoItem.frames / videoItem.FPS).toFixed(2) + ' s'
+
+    const videoSize = videoItem.videoSize
+    document.getElementById('dimension_info').innerText = 'Dimension: ' + videoSize.width + ' x ' + videoSize.height
+
+    const imageInfo = getImageInfo(videoItem)
+    document.getElementById('memory_info').innerText = 'Memory: ' + imageInfo[0]
+    let infoList = ''
+    for (const key in imageInfo[1]) {
         if (imageInfo[1].hasOwnProperty(key)) {
-            let line = imageInfo[1][key];
-            innerHTML = innerHTML.concat('<li class="image-info-list-item">', line, '</li>')
+            const line = imageInfo[1][key]
+            infoList = infoList + ('<li class="image-info-list-item">' + line + '</li>')
         }
     }
-    imageListDiv.innerHTML = innerHTML
+    document.getElementById('image-info-list').innerHTML = infoList
 }
 
 function switchColor(target) {

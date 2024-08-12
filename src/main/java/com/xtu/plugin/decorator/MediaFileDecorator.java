@@ -4,6 +4,8 @@ import com.intellij.ide.projectView.PresentationData;
 import com.intellij.ide.projectView.ProjectViewNode;
 import com.intellij.ide.projectView.ProjectViewNodeDecorator;
 import com.intellij.openapi.vfs.VirtualFile;
+import com.intellij.packageDependencies.ui.PackageDependenciesNode;
+import com.intellij.ui.ColoredTreeCellRenderer;
 import com.xtu.plugin.common.utils.FileUtils;
 import icons.PluginIcons;
 import org.jetbrains.annotations.NotNull;
@@ -40,5 +42,10 @@ public class MediaFileDecorator implements ProjectViewNodeDecorator {
     private void setIcon(@NotNull ProjectViewNode<?> node, @NotNull Icon icon) {
         PresentationData presentation = node.getPresentation();
         presentation.setIcon(icon);
+    }
+
+    @SuppressWarnings("removal")
+    @Override
+    public void decorate(PackageDependenciesNode node, ColoredTreeCellRenderer cellRenderer) {
     }
 }
