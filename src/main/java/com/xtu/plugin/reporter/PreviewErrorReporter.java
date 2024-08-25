@@ -27,7 +27,7 @@ public class PreviewErrorReporter extends ErrorReportSubmitter {
     }
 
     @Override
-    public boolean submit(@NotNull IdeaLoggingEvent[] events,
+    public boolean submit(IdeaLoggingEvent @NotNull [] events,
                           @Nullable String additionalInfo,
                           @NotNull Component parentComponent,
                           @NotNull Consumer<? super SubmittedReportInfo> consumer) {
@@ -41,6 +41,7 @@ public class PreviewErrorReporter extends ErrorReportSubmitter {
         return true;
     }
 
+    @NotNull
     private String collectErrorStack(@NotNull IdeaLoggingEvent[] events) {
         StringBuilder errorStackInfoBuilder = new StringBuilder();
         for (IdeaLoggingEvent event : events) {
@@ -49,8 +50,8 @@ public class PreviewErrorReporter extends ErrorReportSubmitter {
         return errorStackInfoBuilder.toString();
     }
 
-    private SubmittedReportInfo.SubmissionStatus postErrorMsg(@Nullable String additionalInfo,
-                                                              @NotNull String errorInfo) {
+    @NotNull
+    private SubmittedReportInfo.SubmissionStatus postErrorMsg(@Nullable String additionalInfo, @NotNull String errorInfo) {
         StringBuilder contentSb = new StringBuilder();
         if (additionalInfo != null) {
             contentSb.append("additionalInfo:\n").append(additionalInfo).append("\n\n");

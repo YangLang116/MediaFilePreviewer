@@ -1,4 +1,4 @@
-package listener;
+package com.xtu.plugin.listener;
 
 import com.intellij.ide.AppLifecycleListener;
 import com.twelvemonkeys.imageio.plugins.svg.SVGImageReaderSpi;
@@ -9,13 +9,13 @@ import javax.imageio.spi.IIORegistry;
 import javax.imageio.spi.ImageReaderSpi;
 import java.util.List;
 
-public class AppLifecycleListenerImpl implements com.intellij.ide.AppLifecycleListener {
+public class AppLifecycleListenerImpl implements AppLifecycleListener {
 
     @Override
     public void appFrameCreated(@NotNull List<String> commandLineArgs) {
-        AppLifecycleListener.super.appFrameCreated(commandLineArgs);
-        IIORegistry.getDefaultInstance().registerServiceProvider(new WebPImageReaderSpi(), ImageReaderSpi.class);
-        IIORegistry.getDefaultInstance().registerServiceProvider(new SVGImageReaderSpi(), ImageReaderSpi.class);
+        IIORegistry registry = IIORegistry.getDefaultInstance();
+        registry.registerServiceProvider(new WebPImageReaderSpi(), ImageReaderSpi.class);
+        registry.registerServiceProvider(new SVGImageReaderSpi(), ImageReaderSpi.class);
     }
 
 }

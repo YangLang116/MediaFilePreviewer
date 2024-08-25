@@ -8,9 +8,9 @@ import java.nio.charset.StandardCharsets;
 
 public class StreamUtils {
 
-    public static void writeToStream(@NotNull OutputStream outputStream, @NotNull String dataStr) throws IOException {
+    public static void writeToStream(@NotNull OutputStream outputStream, @NotNull String content) throws IOException {
         try {
-            outputStream.write(dataStr.getBytes(StandardCharsets.UTF_8));
+            outputStream.write(content.getBytes(StandardCharsets.UTF_8));
             outputStream.flush();
         } finally {
             CloseUtils.close(outputStream);

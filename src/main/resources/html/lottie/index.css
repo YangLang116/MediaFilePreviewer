@@ -9,12 +9,15 @@ body {
     padding: 20px 0;
 }
 
-#canvas {
-    padding: 10px 10px;
+#canvas-wrap {
     border-radius: 10px;
     border: {main_color} solid 1px;
-    width: {lottie_width}px;
-    height: {lottie_height}px;
+}
+
+#canvas {
+    width: 0;
+    height: 0;
+    margin: 20px;
 }
 
 #controller {
@@ -29,8 +32,26 @@ body {
     text-align: center;
     line-height: 40px;
     font-size: 16px;
-    color: #30CC71;
+    color: {main_color};
     border-radius: 20px;
     border: {main_color} solid 1px;
     margin: 0 10px;
+}
+
+#canvas-info-list {
+    margin-top: 30px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 10px 0;
+    border-radius: 10px;
+    border: {main_color} solid 1px;
+}
+
+.canvas-info-list-item {
+    font-size: 14px;
+    color: {main_color};
+    line-height: 2;
+    list-style-type: none;
+    margin: 0 15px
 }

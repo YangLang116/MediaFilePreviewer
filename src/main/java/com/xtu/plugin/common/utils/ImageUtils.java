@@ -1,55 +1,35 @@
 package com.xtu.plugin.common.utils;
 
-import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.openapi.vfs.VirtualFile;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import javax.imageio.ImageIO;
+import javax.imageio.ImageReadParam;
 import javax.imageio.ImageReader;
 import javax.imageio.spi.ImageReaderSpi;
 import javax.imageio.stream.ImageInputStream;
 import java.awt.image.BufferedImage;
-import java.awt.image.ColorModel;
 import java.io.Closeable;
 import java.io.File;
 import java.util.Iterator;
 
 public class ImageUtils {
 
-    @SuppressWarnings("SpellCheckingInspection")
     private static boolean isTwelveMonkeysRead(@NotNull ImageReader reader) {
         ImageReaderSpi imageReaderSpi = reader.getOriginatingProvider();
         if (imageReaderSpi == null) return false;
         Class<? extends ImageReaderSpi> pClass = imageReaderSpi.getClass();
-        if (pClass == null) return false;
         String packageName = pClass.getPackageName();
         return packageName.startsWith("com.twelvemonkeys.imageio");
     }
 
-    public static boolean checkSupport(@NotNull String extension) {
-        Iterator<ImageReader> iterator = ImageIO.getImageReadersByFormatName(extension);
-        while (iterator.hasNext()) {
-            ImageReader reader = iterator.next();
-            if (isTwelveMonkeysRead(reader)) return true;
-        }
-        return false;
-    }
-
-    public static String getImageInfo(@NotNull BufferedImage image, @NotNull VirtualFile file, String fileExtension) {
-        final int width = image.getWidth();
-        final int height = image.getHeight();
-        final ColorModel colorModel = image.getColorModel();
-        final int imageMode = colorModel.getPixelSize();
-        String imageSize = StringUtil.formatFileSize(file.getLength());
-        return String.format("%dx%d %s (%d-bit color) %s", width, height, fileExtension, imageMode, imageSize);
-    }
-
     @Nullable
-    public static ImageReader getTwelveMonkeysRead(@NotNull String fileExtension, @NotNull VirtualFile file) {
-        String filePath = file.getPath();
-        File imageFile = new File(filePath);
+    public static ImageReader getTwelveMonkeysRead(@NotNull VirtualFile file) {
+        File imageFile = new File(file.getPath());
         if (!imageFile.canRead()) return null;
+        String fileExtension = file.getExtension();
+        assert fileExtension != null;
         Iterator<ImageReader> iterator = ImageIO.getImageReadersByFormatName(fileExtension);
         while (iterator.hasNext()) {
             ImageReader reader = iterator.next();
@@ -72,10 +52,27 @@ public class ImageUtils {
         }
     }
 
+    public static int getImageNum(@NotNull ImageReader imageReader) {
+        try {
+            return imageReader.getNumImages(true);
+        } catch (Exception e) {
+            LogUtils.info("WebpImagePanel initFirstFrameInThreadPool: " + e.getMessage());
+            return 0;
+        }
+    }
+
     @Nullable
     public static BufferedImage loadImage(@NotNull ImageReader reader, int imageIndex) {
+        return loadImage(reader, imageIndex, null);
+    }
+
+
+    @Nullable
+    public static BufferedImage loadImage(@NotNull ImageReader reader,
+                                          int imageIndex,
+                                          @Nullable ImageReadParam param) {
         try {
-            return reader.read(imageIndex);
+            return reader.read(imageIndex, param);
         } catch (Throwable e) {
             LogUtils.info("ImageUtils loadImage: " + e.getMessage());
             return null;

@@ -9,7 +9,7 @@ plugins {
     // Kotlin support
     id("org.jetbrains.kotlin.jvm") version "1.5.30"
     // Gradle IntelliJ Plugin
-    id("org.jetbrains.intellij") version "1.3.1"
+    id("org.jetbrains.intellij") version "1.11.0"
     // Gradle Changelog Plugin
     id("org.jetbrains.changelog") version "1.3.0"
     // Gradle Qodana Plugin
@@ -26,8 +26,8 @@ repositories {
 
 dependencies {
     implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
-    implementation("com.twelvemonkeys.imageio", "imageio-webp", "3.9.4")
-    implementation("com.twelvemonkeys.imageio", "imageio-batik", "3.9.4")
+    implementation("com.twelvemonkeys.imageio", "imageio-webp", "3.10.1")
+    implementation("com.twelvemonkeys.imageio", "imageio-batik", "3.10.1")
 }
 
 // Configure Gradle IntelliJ Plugin - read more: https://github.com/JetBrains/gradle-intellij-plugin
@@ -45,11 +45,11 @@ intellij {
 changelog {
     version.set(properties("pluginVersion"))
     path.set("${project.projectDir}/CHANGELOG.md")
-    header.set(provider { "[${version.get()}] - ${org.jetbrains.changelog.date()}" })
+    header.set(provider { "[${version.get()}]" })
     itemPrefix.set("-")
     keepUnreleasedSection.set(true)
     unreleasedTerm.set("[Coming]")
-    groups.set(listOf("Changed"))
+    groups.set(listOf(""))
 }
 
 // Configure Gradle Qodana Plugin - read more: https://github.com/JetBrains/gradle-qodana-plugin
@@ -124,14 +124,6 @@ tasks {
     }
 
     runIde {
-        jbrVersion.set("11_0_10b1145.115")
         ideDir.set(file(properties("idePath")))
-    }
-}
-
-tasks.findByName("buildPlugin")?.doLast {
-    copy {
-        from("build/distributions/MediaFilePreviewer-${version}.zip")
-        into("plugin-version/")
     }
 }
