@@ -12,23 +12,23 @@ import org.jetbrains.annotations.Nullable;
 import javax.swing.*;
 import java.beans.PropertyChangeListener;
 
-public abstract class MediaFileEditor extends UserDataHolderBase implements FileEditor {
+public abstract class MediaFileEditor<T extends JComponent> extends UserDataHolderBase implements FileEditor {
 
     private final String editorName;
     private final VirtualFile file;
-    private JComponent rootComponent;
+    private T rootComponent;
 
     public MediaFileEditor(@NotNull String editorName, @NotNull VirtualFile file) {
         this.editorName = editorName;
         this.file = file;
     }
 
-    public void setComponent(@NotNull JComponent rootComponent) {
+    public void setComponent(@NotNull T rootComponent) {
         this.rootComponent = rootComponent;
     }
 
     @Override
-    public @NotNull JComponent getComponent() {
+    public @NotNull T getComponent() {
         return rootComponent;
     }
 

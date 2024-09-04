@@ -12,7 +12,7 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 
-public class HtmLoadEditor extends MediaFileEditor {
+public class HtmLoadEditor extends MediaFileEditor<JComponent> {
 
     private JBCefBrowser jcefBrowser;
     private FxHtmlLoader htmlLoader;

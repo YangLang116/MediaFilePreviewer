@@ -1,12 +1,7 @@
 package com.xtu.plugin.previewer.webp;
 
-import com.intellij.openapi.application.Application;
-import com.intellij.openapi.application.ApplicationManager;
-import com.intellij.openapi.ui.Messages;
-import com.intellij.openapi.util.text.Formats;
 import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.ui.components.JBBox;
-import com.intellij.util.ui.JBUI;
+import com.intellij.ui.JBColor;
 import com.intellij.util.ui.StartupUiUtil;
 import com.xtu.plugin.common.ui.ScalePanel;
 import com.xtu.plugin.common.utils.ImageUtils;
@@ -18,7 +13,6 @@ import com.xtu.plugin.previewer.webp.utils.WebpUtils;
 import org.jetbrains.annotations.NotNull;
 
 import javax.imageio.ImageReader;
-import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.awt.image.VolatileImage;
@@ -27,7 +21,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingDeque;
 
-public class WebpImagePanel extends ScalePanel {
+public class WebpImageComponent extends ScalePanel {
 
     private volatile Dimension picDimension;
 
@@ -38,9 +32,11 @@ public class WebpImagePanel extends ScalePanel {
     private final ExecutorService executor;
     private LinkedBlockingDeque<WebPDrawInfo> bufferedImageQueue;
 
-    public WebpImagePanel(@NotNull VirtualFile webpFile) {
+    private final OnLoadListener listener;
+
+    public WebpImageComponent(@NotNull VirtualFile webpFile, @NotNull OnLoadListener listener) {
         super();
-        this.setLayout(new BorderLayout());
+        this.listener = listener;
         this.executor = Executors.newCachedThreadPool();
         this.executor.submit(() -> parseFile(webpFile));
     }
@@ -49,19 +45,19 @@ public class WebpImagePanel extends ScalePanel {
         imageReader = ImageUtils.getTwelveMonkeysRead(webpFile);
         if (imageReader == null) {
             LogUtils.info("WebpImagePanel imageReader == null");
-            this.showErrorLabel();
+            this.listener.onFail();
             return;
         }
         final int imageNum = ImageUtils.getImageNum(imageReader);
         if (imageNum <= 0) {
             LogUtils.info("WebpImagePanel imageNum: " + imageNum);
-            this.showErrorLabel();
+            this.listener.onFail();
             return;
         }
         BufferedImage firstFrame = ImageUtils.loadImage(imageReader, 0);
         if (firstFrame == null) {
             LogUtils.info("WebpImagePanel bufferedImage == null");
-            this.showErrorLabel();
+            this.listener.onFail();
             return;
         }
         if (imageNum == 1) {
@@ -75,7 +71,7 @@ public class WebpImagePanel extends ScalePanel {
                                   @NotNull VirtualFile webpFile) {
         this.picDimension = new Dimension(firstFrame.getWidth(), firstFrame.getHeight());
         int colorMode = firstFrame.getColorModel().getPixelSize();
-        showImageInfoLabel(this.picDimension, colorMode, 1, webpFile);
+        this.listener.onSuccess(this.picDimension, colorMode, 1, webpFile.getLength());
         initVolatileImage(this.picDimension);
         flushImageToVolatileGraphics(new Rectangle(picDimension), firstFrame);
     }
@@ -83,14 +79,14 @@ public class WebpImagePanel extends ScalePanel {
     private void parseDynamicImage(@NotNull ImageReader imageReader,
                                    @NotNull BufferedImage firstFrame,
                                    @NotNull VirtualFile webpFile) {
-        List<WebPFrame> frameList = WebpUtils.loadAnimFrames(imageReader);
+        java.util.List<WebPFrame> frameList = WebpUtils.loadAnimFrames(imageReader);
         if (frameList == null || frameList.isEmpty()) {
-            this.showErrorLabel();
+            this.listener.onFail();
             return;
         }
         this.picDimension = WebpUtils.getPicSize(frameList);
         int colorMode = firstFrame.getColorModel().getPixelSize();
-        showImageInfoLabel(this.picDimension, colorMode, frameList.size(), webpFile);
+        this.listener.onSuccess(this.picDimension, colorMode, frameList.size(), webpFile.getLength());
         Dimension contentSize = WebpUtils.getContentSize(frameList);
         initVolatileImage(contentSize);
         WebPFrame firstFrameInfo = frameList.get(0);
@@ -98,11 +94,33 @@ public class WebpImagePanel extends ScalePanel {
 
         if (!PluginUtils.isAutoPlay()) return;
         this.bufferedImageQueue = new LinkedBlockingDeque<>(3);
-        this.executor.submit(() -> prepareImage(this.executor, imageReader, frameList, bufferedImageQueue)
-        );
+        this.executor.submit(() -> prepareImage(this.executor, imageReader, frameList, bufferedImageQueue));
         this.executor.submit(() -> scheduleDraw(this.executor, bufferedImageQueue, firstFrameInfo.duration));
     }
 
+    private void initVolatileImage(@NotNull Dimension size) {
+        int width = size.width;
+        int height = size.height;
+        GraphicsEnvironment localGraphicsEnvironment = GraphicsEnvironment.getLocalGraphicsEnvironment();
+        GraphicsDevice defaultScreenDevice = localGraphicsEnvironment.getDefaultScreenDevice();
+        GraphicsConfiguration config = defaultScreenDevice.getDefaultConfiguration();
+        try {
+            this.image = config.createCompatibleVolatileImage(width, height, new ImageCapabilities(true), Transparency.TRANSLUCENT);
+        } catch (Exception e) {
+            LogUtils.info("WebpImagePanel initVolatileImage: " + e.getMessage());
+            this.image = config.createCompatibleVolatileImage(width, height, Transparency.TRANSLUCENT);
+        }
+        this.image.validate(null);
+        this.image.setAccelerationPriority(1F);
+        this.imageGraphics = this.image.createGraphics();
+        this.imageGraphics.setComposite(AlphaComposite.Src);
+        // 关闭防抖动
+        this.imageGraphics.setRenderingHint(RenderingHints.KEY_DITHERING, RenderingHints.VALUE_DITHER_DISABLE);
+        // 性能优先
+        this.imageGraphics.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_SPEED);
+        this.imageGraphics.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING, RenderingHints.VALUE_COLOR_RENDER_SPEED);
+        this.imageGraphics.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_SPEED);
+    }
 
     private void prepareImage(@NotNull ExecutorService executor,
                               @NotNull ImageReader imageReader,
@@ -147,59 +165,6 @@ public class WebpImagePanel extends ScalePanel {
         repaint();
     }
 
-    private void showImageInfoLabel(Dimension size,
-                                    int colorMode,
-                                    int imageNum,
-                                    @NotNull VirtualFile webpFile) {
-        String imageInfo = String.format("%dx%d WebP (%d-bit color%s) %s",
-                size.width, size.height,
-                colorMode,
-                imageNum == 1 ? "" : String.format(" / %d frames", imageNum),
-                Formats.formatFileSize(webpFile.getLength())
-        );
-        Application application = ApplicationManager.getApplication();
-        application.invokeLater(() -> {
-            JBBox container = JBBox.createHorizontalBox();
-            container.setBorder(JBUI.Borders.empty(10));
-            container.add(JBBox.createHorizontalGlue());
-            container.add(new JLabel(imageInfo));
-            add(container, BorderLayout.NORTH);
-        });
-    }
-
-    private void showErrorLabel() {
-        Application application = ApplicationManager.getApplication();
-        application.invokeLater(() -> {
-            String errorText = "Fail to load WEBP Image";
-            JLabel errorLabel = new JLabel(errorText, Messages.getErrorIcon(), SwingConstants.CENTER);
-            add(errorLabel, BorderLayout.CENTER);
-        });
-    }
-
-    private void initVolatileImage(@NotNull Dimension size) {
-        int width = size.width;
-        int height = size.height;
-        GraphicsEnvironment localGraphicsEnvironment = GraphicsEnvironment.getLocalGraphicsEnvironment();
-        GraphicsDevice defaultScreenDevice = localGraphicsEnvironment.getDefaultScreenDevice();
-        GraphicsConfiguration config = defaultScreenDevice.getDefaultConfiguration();
-        try {
-            this.image = config.createCompatibleVolatileImage(width, height, new ImageCapabilities(true), Transparency.TRANSLUCENT);
-        } catch (Exception e) {
-            LogUtils.info("WebpImagePanel initVolatileImage: " + e.getMessage());
-            this.image = config.createCompatibleVolatileImage(width, height, Transparency.TRANSLUCENT);
-        }
-        this.image.validate(null);
-        this.image.setAccelerationPriority(1F);
-        this.imageGraphics = this.image.createGraphics();
-        this.imageGraphics.setComposite(AlphaComposite.Src);
-        // 关闭防抖动
-        this.imageGraphics.setRenderingHint(RenderingHints.KEY_DITHERING, RenderingHints.VALUE_DITHER_DISABLE);
-        // 性能优先
-        this.imageGraphics.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_SPEED);
-        this.imageGraphics.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING, RenderingHints.VALUE_COLOR_RENDER_SPEED);
-        this.imageGraphics.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_SPEED);
-    }
-
     @Override
     protected void onScaleChanged() {
         repaint();
@@ -207,7 +172,8 @@ public class WebpImagePanel extends ScalePanel {
 
     @Override
     public void paint(Graphics g) {
-        super.paint(g);
+        g.setColor(JBColor.background());
+        g.fillRect(0, 0, getWidth(), getHeight());
         if (image == null || drawRect == null) return;
         float startX = (getWidth() - this.picDimension.width * scale) / 2;
         float startY = (getHeight() - this.picDimension.height * scale) / 2;
@@ -235,5 +201,12 @@ public class WebpImagePanel extends ScalePanel {
             this.image = null;
         }
         this.imageGraphics = null;
+    }
+
+    public interface OnLoadListener {
+
+        void onFail();
+
+        void onSuccess(@NotNull Dimension size, int colorMode, int imageNum, long fileSize);
     }
 }
