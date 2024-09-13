@@ -45,9 +45,9 @@ public class ImageUtils {
             stream = ImageIO.createImageInputStream(imageFile);
             reader.setInput(stream, false, true);
             return reader;
-        } catch (Throwable e) {
+        } catch (Exception e) {
             CloseUtils.close(stream);
-            LogUtils.info("ImageUtils loadInputWithReader: " + e.getMessage());
+            LogUtils.error(e);
             return null;
         }
     }
@@ -56,7 +56,7 @@ public class ImageUtils {
         try {
             return imageReader.getNumImages(true);
         } catch (Exception e) {
-            LogUtils.info("WebpImagePanel initFirstFrameInThreadPool: " + e.getMessage());
+            LogUtils.error(e);
             return 0;
         }
     }
@@ -73,8 +73,8 @@ public class ImageUtils {
                                           @Nullable ImageReadParam param) {
         try {
             return reader.read(imageIndex, param);
-        } catch (Throwable e) {
-            LogUtils.info("ImageUtils loadImage: " + e.getMessage());
+        } catch (Exception e) {
+            LogUtils.error(e);
             return null;
         }
     }

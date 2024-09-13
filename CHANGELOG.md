@@ -2,6 +2,10 @@
 
 ## [Coming]
 
+## 1.1.7
+
+- support error reporting
+
 ## 1.1.6
 
 - fix SVG compatibility issues

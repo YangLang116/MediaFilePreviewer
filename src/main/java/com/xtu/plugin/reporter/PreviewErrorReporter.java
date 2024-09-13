@@ -7,9 +7,11 @@ import com.intellij.openapi.diagnostic.ErrorReportSubmitter;
 import com.intellij.openapi.diagnostic.IdeaLoggingEvent;
 import com.intellij.openapi.diagnostic.SubmittedReportInfo;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.ui.MessageType;
 import com.intellij.openapi.util.NlsActions;
 import com.intellij.util.Consumer;
 import com.xtu.plugin.common.utils.AdviceUtils;
+import com.xtu.plugin.common.utils.ToastUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -58,6 +60,7 @@ public class PreviewErrorReporter extends ErrorReportSubmitter {
         }
         contentSb.append("errorStack:\n").append(errorInfo);
         AdviceUtils.submitData("report issue", contentSb.toString());
+        ToastUtil.make(MessageType.INFO, "thank you for submitting ~");
         return SubmittedReportInfo.SubmissionStatus.NEW_ISSUE;
     }
 }

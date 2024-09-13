@@ -137,7 +137,7 @@ public class WebpImageComponent extends ScalePanel {
                 index = (index + 1) % frameNum;
             }
         } catch (Exception e) {
-            LogUtils.info("WebpImagePanel prepareImage: " + e.getMessage());
+            LogUtils.error(e);
         }
     }
 
@@ -153,7 +153,7 @@ public class WebpImageComponent extends ScalePanel {
                 Thread.sleep(drawInfo.frame.duration);
             }
         } catch (Exception e) {
-            LogUtils.info("WebpImagePanel scheduleDraw: " + e.getMessage());
+            LogUtils.error(e);
         }
     }
 

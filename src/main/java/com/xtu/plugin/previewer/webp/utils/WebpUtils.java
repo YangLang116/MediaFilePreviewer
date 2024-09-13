@@ -32,7 +32,7 @@ public class WebpUtils {
             }
             return result;
         } catch (Exception e) {
-            LogUtils.info("WebpUtils loadImageFrames: " + e.getMessage());
+            LogUtils.error(e);
             return null;
         }
     }
