@@ -1,18 +1,25 @@
 package com.xtu.plugin.previewer.svg;
 
-import com.intellij.openapi.application.Application;
-import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.ui.JBColor;
 import com.intellij.util.ui.StartupUiUtil;
-import com.twelvemonkeys.imageio.plugins.svg.SVGImageReader;
+import com.twelvemonkeys.imageio.plugins.svg.MFSVGImageReader;
+import com.twelvemonkeys.imageio.plugins.svg.SVGImageReaderSpi;
 import com.twelvemonkeys.imageio.plugins.svg.SVGReadParam;
 import com.xtu.plugin.common.ui.ScalePanel;
+import com.xtu.plugin.common.utils.CloseUtils;
 import com.xtu.plugin.common.utils.ImageUtils;
+import com.xtu.plugin.common.utils.LogUtils;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
+import javax.imageio.ImageIO;
+import javax.imageio.stream.ImageInputStream;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class SVGImageComponent extends ScalePanel {
 
@@ -20,14 +27,16 @@ public class SVGImageComponent extends ScalePanel {
 
     private final VirtualFile svgFile;
     private final OnLoadListener listener;
+    private final ExecutorService executorService;
 
-    private boolean hasLoadInfo;
+    private volatile boolean hasLoadInfo;
     private volatile BufferedImage image;
 
     public SVGImageComponent(@NotNull VirtualFile svgFile, @NotNull OnLoadListener listener) {
         super();
         this.svgFile = svgFile;
         this.listener = listener;
+        this.executorService = Executors.newSingleThreadExecutor();
         this.render();
     }
 
@@ -36,10 +45,26 @@ public class SVGImageComponent extends ScalePanel {
         this.render();
     }
 
+    @Nullable
+    private MFSVGImageReader initReader() {
+        MFSVGImageReader reader = new MFSVGImageReader(new SVGImageReaderSpi());
+        ImageInputStream stream = null;
+        try {
+            File file = new File(svgFile.getPath());
+            stream = ImageIO.createImageInputStream(file);
+            reader.setInput(stream, false, true);
+            return reader;
+        } catch (Exception e) {
+            LogUtils.error(e);
+            CloseUtils.close(stream);
+            ImageUtils.dispose(reader);
+            return null;
+        }
+    }
+
     private void render() {
-        Application application = ApplicationManager.getApplication();
-        application.executeOnPooledThread(() -> {
-            SVGImageReader reader = (SVGImageReader) ImageUtils.getTwelveMonkeysRead(svgFile);
+        executorService.submit(() -> {
+            MFSVGImageReader reader = initReader();
             if (reader == null) {
                 image = null;
                 listener.onFail();
@@ -54,8 +79,8 @@ public class SVGImageComponent extends ScalePanel {
                 if (image == null) {
                     listener.onFail();
                 } else if (!hasLoadInfo) {
-                    int width = reader.getWidth(0);
-                    int height = reader.getHeight(0);
+                    int width = image.getWidth();
+                    int height = image.getHeight();
                     listener.onGetInfo(width, height, image.getColorModel().getPixelSize(), svgFile.getLength());
                     hasLoadInfo = true;
                 }
@@ -85,6 +110,9 @@ public class SVGImageComponent extends ScalePanel {
     }
 
     public void dispose() {
+        if (!this.executorService.isShutdown()) {
+            this.executorService.shutdown();
+        }
         if (image != null) {
             image.flush();
             image = null;

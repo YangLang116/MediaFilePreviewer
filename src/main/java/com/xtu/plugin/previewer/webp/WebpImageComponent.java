@@ -3,19 +3,26 @@ package com.xtu.plugin.previewer.webp;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.ui.JBColor;
 import com.intellij.util.ui.StartupUiUtil;
+import com.twelvemonkeys.imageio.plugins.webp.MFAnimationFrame;
+import com.twelvemonkeys.imageio.plugins.webp.MFWebPImageReader;
+import com.twelvemonkeys.imageio.plugins.webp.WebPImageReaderSpi;
 import com.xtu.plugin.common.ui.ScalePanel;
+import com.xtu.plugin.common.utils.CloseUtils;
 import com.xtu.plugin.common.utils.ImageUtils;
 import com.xtu.plugin.common.utils.LogUtils;
 import com.xtu.plugin.common.utils.PluginUtils;
-import com.xtu.plugin.previewer.webp.entity.WebPDrawInfo;
-import com.xtu.plugin.previewer.webp.entity.WebPFrame;
+import com.xtu.plugin.previewer.webp.entity.WebPDrawFrame;
 import com.xtu.plugin.previewer.webp.utils.WebpUtils;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
+import javax.imageio.ImageIO;
 import javax.imageio.ImageReader;
+import javax.imageio.stream.ImageInputStream;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.awt.image.VolatileImage;
+import java.io.File;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -27,22 +34,39 @@ public class WebpImageComponent extends ScalePanel {
 
     private volatile VolatileImage image;
     private volatile Graphics2D imageGraphics;
-    private volatile ImageReader imageReader;
+    private volatile MFWebPImageReader imageReader;
     private volatile Rectangle drawRect;
-    private final ExecutorService executor;
-    private LinkedBlockingDeque<WebPDrawInfo> bufferedImageQueue;
+    private final ExecutorService executorService;
+    private LinkedBlockingDeque<WebPDrawFrame> bufferedImageQueue;
 
     private final OnLoadListener listener;
 
     public WebpImageComponent(@NotNull VirtualFile webpFile, @NotNull OnLoadListener listener) {
         super();
         this.listener = listener;
-        this.executor = Executors.newCachedThreadPool();
-        this.executor.submit(() -> parseFile(webpFile));
+        this.executorService = Executors.newCachedThreadPool();
+        this.executorService.submit(() -> parseFile(webpFile));
+    }
+
+    @Nullable
+    private MFWebPImageReader initReader(@NotNull VirtualFile webpFile) {
+        MFWebPImageReader reader = new MFWebPImageReader(new WebPImageReaderSpi());
+        ImageInputStream stream = null;
+        try {
+            File file = new File(webpFile.getPath());
+            stream = ImageIO.createImageInputStream(file);
+            reader.setInput(stream, false, true);
+            return reader;
+        } catch (Exception e) {
+            LogUtils.error(e);
+            CloseUtils.close(stream);
+            ImageUtils.dispose(reader);
+            return null;
+        }
     }
 
     private void parseFile(@NotNull VirtualFile webpFile) {
-        imageReader = ImageUtils.getTwelveMonkeysRead(webpFile);
+        imageReader = initReader(webpFile);
         if (imageReader == null) {
             LogUtils.info("WebpImagePanel imageReader == null");
             this.listener.onFail();
@@ -63,7 +87,7 @@ public class WebpImageComponent extends ScalePanel {
         if (imageNum == 1) {
             parseStaticImage(firstFrame, webpFile);
         } else {
-            parseDynamicImage(imageReader, firstFrame, webpFile);
+            parseDynamicImage(firstFrame, webpFile);
         }
     }
 
@@ -76,10 +100,9 @@ public class WebpImageComponent extends ScalePanel {
         flushImageToVolatileGraphics(new Rectangle(picDimension), firstFrame);
     }
 
-    private void parseDynamicImage(@NotNull ImageReader imageReader,
-                                   @NotNull BufferedImage firstFrame,
+    private void parseDynamicImage(@NotNull BufferedImage firstFrame,
                                    @NotNull VirtualFile webpFile) {
-        java.util.List<WebPFrame> frameList = WebpUtils.loadAnimFrames(imageReader);
+        List<MFAnimationFrame> frameList = imageReader.getFrames();
         if (frameList == null || frameList.isEmpty()) {
             this.listener.onFail();
             return;
@@ -89,13 +112,13 @@ public class WebpImageComponent extends ScalePanel {
         this.listener.onSuccess(this.picDimension, colorMode, frameList.size(), webpFile.getLength());
         Dimension contentSize = WebpUtils.getContentSize(frameList);
         initVolatileImage(contentSize);
-        WebPFrame firstFrameInfo = frameList.get(0);
+        MFAnimationFrame firstFrameInfo = frameList.get(0);
         flushImageToVolatileGraphics(firstFrameInfo.bounds, firstFrame);
 
         if (!PluginUtils.isAutoPlay()) return;
         this.bufferedImageQueue = new LinkedBlockingDeque<>(3);
-        this.executor.submit(() -> prepareImage(this.executor, imageReader, frameList, bufferedImageQueue));
-        this.executor.submit(() -> scheduleDraw(this.executor, bufferedImageQueue, firstFrameInfo.duration));
+        this.executorService.submit(() -> prepareImage(this.executorService, imageReader, frameList, bufferedImageQueue));
+        this.executorService.submit(() -> scheduleDraw(this.executorService, bufferedImageQueue, firstFrameInfo.duration));
     }
 
     private void initVolatileImage(@NotNull Dimension size) {
@@ -124,15 +147,15 @@ public class WebpImageComponent extends ScalePanel {
 
     private void prepareImage(@NotNull ExecutorService executor,
                               @NotNull ImageReader imageReader,
-                              @NotNull List<WebPFrame> frameList,
-                              @NotNull LinkedBlockingDeque<WebPDrawInfo> bufferedImageQueue) {
+                              @NotNull List<MFAnimationFrame> frameList,
+                              @NotNull LinkedBlockingDeque<WebPDrawFrame> bufferedImageQueue) {
         int index = 1;
         int frameNum = frameList.size();
         try {
             while (!executor.isShutdown()) {
                 BufferedImage image = ImageUtils.loadImage(imageReader, index);
-                WebPFrame frame = frameList.get(index);
-                WebPDrawInfo drawInfo = new WebPDrawInfo(image, frame);
+                MFAnimationFrame frame = frameList.get(index);
+                WebPDrawFrame drawInfo = new WebPDrawFrame(image, frame);
                 bufferedImageQueue.put(drawInfo);
                 index = (index + 1) % frameNum;
             }
@@ -143,12 +166,12 @@ public class WebpImageComponent extends ScalePanel {
 
     @SuppressWarnings("BusyWait")
     private void scheduleDraw(@NotNull ExecutorService executor,
-                              @NotNull LinkedBlockingDeque<WebPDrawInfo> bufferedImageQueue,
+                              @NotNull LinkedBlockingDeque<WebPDrawFrame> bufferedImageQueue,
                               int firstFrameDelay) {
         try {
             Thread.sleep(firstFrameDelay);
             while (!executor.isShutdown()) {
-                WebPDrawInfo drawInfo = bufferedImageQueue.take();
+                WebPDrawFrame drawInfo = bufferedImageQueue.take();
                 flushImageToVolatileGraphics(drawInfo.frame.bounds, drawInfo.image);
                 Thread.sleep(drawInfo.frame.duration);
             }
@@ -187,8 +210,8 @@ public class WebpImageComponent extends ScalePanel {
     }
 
     public void dispose() {
-        if (!this.executor.isShutdown()) {
-            this.executor.shutdown();
+        if (!this.executorService.isShutdown()) {
+            this.executorService.shutdown();
         }
         if (this.bufferedImageQueue != null) {
             this.bufferedImageQueue.clear();
