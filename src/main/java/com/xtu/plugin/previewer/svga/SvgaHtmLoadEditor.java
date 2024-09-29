@@ -13,11 +13,15 @@ public class SvgaHtmLoadEditor extends HtmLoadEditor {
     public SvgaHtmLoadEditor(@NotNull Project project,
                              @NotNull String editorName,
                              @NotNull VirtualFile file) {
-        super(editorName, file);
+        super(project, editorName, file);
+    }
+
+    @Override
+    public void load(@NotNull Project project, @NotNull VirtualFile file) {
         SvgaHtmlGenerator htmlGenerator = new SvgaHtmlGenerator(project, file, new HtmlGenerator.OnHTMLGenerateListener() {
             @Override
             public void onReady(@NotNull String htmlContent) {
-                loadHtml(htmlContent);
+                setHtml(htmlContent);
             }
 
             @Override
