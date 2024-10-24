@@ -29,7 +29,8 @@ public class AdviceDialog extends DialogWrapper {
             ToastUtil.make(MessageType.ERROR, "Title or Content is Empty ~");
             return;
         }
-        AdviceUtils.submitData(title, content);
+        AdviceUtils.submitData(title.trim(), content.trim());
+        ToastUtil.make(MessageType.INFO, "thank you for submitting ~");
     }
 
     private AdviceDialog(JComponent parentComponent) {
@@ -46,26 +47,31 @@ public class AdviceDialog extends DialogWrapper {
         this.contentField.setBorder(JBUI.Borders.empty(3, 5));
     }
 
+    @Nullable
+    @NonNls
     @Override
-    protected @Nullable
-    @NonNls String getDimensionServiceKey() {
+    protected String getDimensionServiceKey() {
         return getClass().getSimpleName();
     }
 
+    @Nullable
     @Override
-    public @Nullable JComponent getPreferredFocusedComponent() {
+    public JComponent getPreferredFocusedComponent() {
         return this.titleField;
     }
 
+    @Nullable
     @Override
-    protected @Nullable JComponent createCenterPanel() {
+    protected JComponent createCenterPanel() {
         return this.rootPanel;
     }
 
+    @Nullable
     private String getAdviceTitle() {
         return this.titleField.getText();
     }
 
+    @Nullable
     private String getAdviceContent() {
         return this.contentField.getText();
     }
