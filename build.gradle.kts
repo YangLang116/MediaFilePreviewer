@@ -15,7 +15,7 @@ repositories {
 }
 
 dependencies {
-    implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
+    implementation("org.json:json:20240303")
     implementation("com.twelvemonkeys.imageio", "imageio-webp", "3.10.1")
     implementation("com.twelvemonkeys.imageio", "imageio-batik", "3.10.1")
 
