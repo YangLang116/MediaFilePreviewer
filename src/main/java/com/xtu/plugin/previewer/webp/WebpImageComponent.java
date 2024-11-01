@@ -23,6 +23,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.awt.image.VolatileImage;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -102,8 +103,8 @@ public class WebpImageComponent extends ScalePanel {
 
     private void parseDynamicImage(@NotNull BufferedImage firstFrame,
                                    @NotNull VirtualFile webpFile) {
-        List<MFAnimationFrame> frameList = imageReader.getFrames();
-        if (frameList == null || frameList.isEmpty()) {
+        List<MFAnimationFrame> frameList = new ArrayList<>(imageReader.getFrames());
+        if (frameList.isEmpty()) {
             this.listener.onFail();
             return;
         }
@@ -210,9 +211,7 @@ public class WebpImageComponent extends ScalePanel {
     }
 
     public void dispose() {
-        if (!this.executorService.isShutdown()) {
-            this.executorService.shutdown();
-        }
+        shutdown();
         if (this.bufferedImageQueue != null) {
             this.bufferedImageQueue.clear();
         }
@@ -224,6 +223,17 @@ public class WebpImageComponent extends ScalePanel {
             this.image = null;
         }
         this.imageGraphics = null;
+    }
+
+    private void shutdown() {
+        if (this.executorService.isShutdown()) {
+            return;
+        }
+        try {
+            this.executorService.shutdownNow();
+        } catch (Exception e) {
+            LogUtils.error(e);
+        }
     }
 
     public interface OnLoadListener {
