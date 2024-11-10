@@ -17,6 +17,6 @@ public class SvgaFileEditorProvider extends MediaFileEditorProvider {
     public FileEditor createEditor(@NotNull Project project,
                                    @NotNull String editorName,
                                    @NotNull VirtualFile virtualFile) {
-        return new SvgaHtmLoadEditor(project, editorName, virtualFile);
+        return new SvgaHtmlLoadEditor(project, editorName, virtualFile);
     }
 }

@@ -16,14 +16,14 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 
-public abstract class HtmLoadEditor extends MediaFileEditor<JComponent> {
+public abstract class HtmlLoadEditor extends MediaFileEditor<JComponent> {
 
     private JBCefBrowser jcefBrowser;
     private FxHtmlLoader htmlLoader;
 
-    public HtmLoadEditor(@NotNull Project project,
-                         @NotNull String editorName,
-                         @NotNull VirtualFile file) {
+    public HtmlLoadEditor(@NotNull Project project,
+                          @NotNull String editorName,
+                          @NotNull VirtualFile file) {
         super(editorName, file);
         setComponent(createBrowser());
         refreshUI(project, file);

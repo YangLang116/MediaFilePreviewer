@@ -2,16 +2,16 @@ package com.xtu.plugin.previewer.lottie;
 
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
-import com.xtu.plugin.previewer.HtmLoadEditor;
+import com.xtu.plugin.previewer.HtmlLoadEditor;
 import com.xtu.plugin.previewer.HtmlGenerator;
 import com.xtu.plugin.previewer.lottie.generator.LottieHtmlGenerator;
 import org.jetbrains.annotations.NotNull;
 
-public class LottieHtmLoadEditor extends HtmLoadEditor {
+public class LottieHtmlLoadEditor extends HtmlLoadEditor {
 
-    public LottieHtmLoadEditor(@NotNull Project project,
-                               @NotNull String editorName,
-                               @NotNull VirtualFile file) {
+    public LottieHtmlLoadEditor(@NotNull Project project,
+                                @NotNull String editorName,
+                                @NotNull VirtualFile file) {
         super(project, editorName, file);
     }
 

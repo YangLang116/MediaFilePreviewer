@@ -2,17 +2,17 @@ package com.xtu.plugin.previewer.svga;
 
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
-import com.xtu.plugin.previewer.HtmLoadEditor;
+import com.xtu.plugin.previewer.HtmlLoadEditor;
 import com.xtu.plugin.previewer.HtmlGenerator;
 import com.xtu.plugin.previewer.svga.generator.SvgaHtmlGenerator;
 import org.jetbrains.annotations.NotNull;
 
 @SuppressWarnings("SpellCheckingInspection")
-public class SvgaHtmLoadEditor extends HtmLoadEditor {
+public class SvgaHtmlLoadEditor extends HtmlLoadEditor {
 
-    public SvgaHtmLoadEditor(@NotNull Project project,
-                             @NotNull String editorName,
-                             @NotNull VirtualFile file) {
+    public SvgaHtmlLoadEditor(@NotNull Project project,
+                              @NotNull String editorName,
+                              @NotNull VirtualFile file) {
         super(project, editorName, file);
     }
 

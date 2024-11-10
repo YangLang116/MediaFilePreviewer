@@ -25,6 +25,6 @@ public class LottieFileEditorProvider extends MediaFileEditorProvider {
     public FileEditor createEditor(@NotNull Project project,
                                    @NotNull String editorName,
                                    @NotNull VirtualFile virtualFile) {
-        return new LottieHtmLoadEditor(project, editorName, virtualFile);
+        return new LottieHtmlLoadEditor(project, editorName, virtualFile);
     }
 }
