@@ -110,12 +110,21 @@ public class SVGImageComponent extends ScalePanel {
     }
 
     public void dispose() {
-        if (!this.executorService.isShutdown()) {
-            this.executorService.shutdown();
-        }
+        shutdown();
         if (image != null) {
             image.flush();
             image = null;
+        }
+    }
+
+    private void shutdown() {
+        if (this.executorService.isShutdown()) {
+            return;
+        }
+        try {
+            this.executorService.shutdownNow();
+        } catch (Exception e) {
+            LogUtils.error(e);
         }
     }
 
