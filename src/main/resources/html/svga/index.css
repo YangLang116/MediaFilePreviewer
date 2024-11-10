@@ -1,12 +1,22 @@
 body {
+    width: 100vw;
+    height: 100vh;
     background-color: {body_color};
+    overflow: hidden;
 }
 
 #root {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: -30px;
+    right: -30px;
+    overflow-x: hidden;
+    overflow-y: scroll;
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 20px 0;
+    padding: 20px 50px;
 }
 
 #canvas {
