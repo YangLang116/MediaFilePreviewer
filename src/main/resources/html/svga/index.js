@@ -1,22 +1,23 @@
 
 function onPageLoad() {
-    let scale = 1.0
     let canvasSize
+    let scale = 1.0
+    let isRunning = false
     const canvasStyle = document.getElementById('canvas').style
+    const player = new SVGA.Player('#canvas')
 
     function resizeCanvas() {
         canvasStyle.width = (canvasSize[0] * scale) + 'px'
         canvasStyle.height = (canvasSize[1] * scale) + 'px'
     }
 
-    function calcInitSize(videoSize) {
-        const maxSize = 360
-        const width = videoSize.width
-        const height = videoSize.height
-        if (width < maxSize && height < maxSize) return [width, height];
-        if (height === 0) return [0, 0];
-        let rate = width / height;
-        return width > height ? [maxSize, maxSize / rate] : [maxSize * rate, maxSize];
+    function toggleAnim() {
+        if (isRunning) {
+            player.pauseAnimation()
+        } else {
+            player.startAnimation()
+        }
+        isRunning = !isRunning
     }
 
     function bindScaleEvent() {
@@ -31,49 +32,64 @@ function onPageLoad() {
                event.preventDefault()
                scaleCanvas(event.deltaY > 0 ? -0.1 : 0.1)
             }
-        }, { passive: false });
+        }, { passive: false })
+        window.addEventListener('keydown', function(event) {
+            if (event.keyCode === 32) {
+               event.preventDefault()
+               toggleAnim()
+            }
+        })
     }
 
-    const player = new SVGA.Player('#canvas')
     const parser = new SVGA.Parser('#canvas')
     parser.load('{file_content_placeholder}', function (videoItem) {
             canvasSize = calcInitSize(videoItem.videoSize)
             resizeCanvas()
             fillCanvasInfo(videoItem)
             bindScaleEvent()
-            player.setVideoItem(videoItem);
-            player.startAnimation()
+            player.setVideoItem(videoItem)
+            toggleAnim()
     })
+}
+
+function calcInitSize(videoSize) {
+    const maxSize = 360
+    const width = videoSize.width
+    const height = videoSize.height
+    if (width < maxSize && height < maxSize) return [width, height]
+    if (height === 0) return [0, 0]
+    let rate = width / height
+    return width > height ? [maxSize, maxSize / rate] : [maxSize * rate, maxSize]
 }
 
 function fillCanvasInfo(videoItem) {
     function getImageInfo(videoItem) {
-        let size = 0;
+        let size = 0
         const infoList = []
         for (let key in videoItem.images) {
             if (videoItem.images.hasOwnProperty(key)) {
-                const n = getImageSize(videoItem.images[key]);
-                size += n.width * n.height * 4;
+                const n = getImageSize(videoItem.images[key])
+                size += n.width * n.height * 4
                 infoList.push(key +  " --- { width: " + n.width + ", height: " + n.height + " }")
             }
         }
-        return [convertSize(size), infoList];
+        return [convertSize(size), infoList]
     }
     function getImageSize(image) {
         let dec = window.atob(image)
         let length = dec.length
-        let array = new Uint8Array(new ArrayBuffer(length));
-        let i;
-        for (i = 0; i < length; i++) array[i] = dec.charCodeAt(i);
+        let array = new Uint8Array(new ArrayBuffer(length))
+        let i
+        for (i = 0; i < length; i++) array[i] = dec.charCodeAt(i)
         return {width: 256 * array[18] + array[19], height: 256 * array[22] + array[23]}
     }
     function convertSize(size) {
         if (size < 1024) {
-            return size + ' B';
+            return size + ' B'
         } else if (size < 1024 * 1024) {
-            return (size * 1.0 / 1024).toFixed(2) + ' KB';
+            return (size * 1.0 / 1024).toFixed(2) + ' KB'
         } else {
-            return (size * 1.0 / 1024 / 1024).toFixed(2) + ' MB';
+            return (size * 1.0 / 1024 / 1024).toFixed(2) + ' MB'
         }
     }
     document.getElementById('version_info').innerText = 'Version: ' + videoItem.version
