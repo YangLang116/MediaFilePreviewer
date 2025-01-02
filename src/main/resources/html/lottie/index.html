@@ -7,18 +7,21 @@
     <script>{script_placeholder}</script>
 </head>
 <body onload="onPageLoad()">
-<div id="root">
-    <div id="canvas-wrap">
+<div id="opera-block">
+    <div class="spacer"></div>
+    <div class="info-item" id="version_info">Version: -</div>
+    <div class="info-item" id="frame_info">Frames: -</div>
+    <div class="info-item" id="size_info">Size: -</div>
+    <div class="item" id="color-black" onclick="switchColor(this)"></div>
+    <div class="item" id="color-white" onclick="switchColor(this)"></div>
+    <div class="item" id="color-blue" onclick="switchColor(this)"></div>
+    <div class="item" id="color-green" onclick="switchColor(this)"></div>
+    <div class="item" id="color-yellow" onclick="switchColor(this)"></div>
+    <div class="item" id="color-red" onclick="switchColor(this)"></div>
+</div>
+<div id="content">
+    <div id="canvas-container">
         <div id="canvas"></div>
-    </div>
-    <ul id="canvas-info-list">
-        <li class="canvas-info-list-item" id="version_info">Version: -</li>
-        <li class="canvas-info-list-item" id="frame_info">Frames: -</li>
-        <li class="canvas-info-list-item" id="size_info">Size: -</li>
-    </ul>
-    <div id="controller">
-        <div class="controller-item" onclick="playOrPauseAnim()">Pause</div>
-        <div class="controller-item" onclick="stopAnim()">Stop</div>
     </div>
 </div>
 </body>

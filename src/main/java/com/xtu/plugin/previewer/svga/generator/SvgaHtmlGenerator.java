@@ -5,6 +5,7 @@ import com.intellij.openapi.util.text.Formats;
 import com.intellij.openapi.vfs.VfsUtil;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.ui.JBColor;
+import com.intellij.util.ui.JBUI;
 import com.xtu.plugin.common.utils.ColorUtils;
 import com.xtu.plugin.common.utils.FileUtils;
 import com.xtu.plugin.previewer.HtmlGenerator;
@@ -40,9 +41,11 @@ public class SvgaHtmlGenerator extends HtmlGenerator {
 
             return htmlContent.replace("{style_placeholder}", cssContent)
                     .replace("{script_placeholder}", jsZipMinContent + " " + jsZipUtilsContent + " " + jsSvgaContent + " " + jsContent)
-                    .replace("{body_color}", ColorUtils.toString(JBColor.background()))
-                    .replace("{main_color}", ColorUtils.toString(JBColor.foreground()))
-                    .replace("{file_content_placeholder}", svgaContent)
+                    .replace("{bg_color}", ColorUtils.toString(JBColor.background()))
+                    .replace("{font_color}", ColorUtils.toString(JBColor.foreground()))
+                    .replace("{title-size}", String.valueOf(JBUI.scaleFontSize(14)))
+                    .replace("{text-size}", String.valueOf(JBUI.scaleFontSize(12)))
+                    .replace("{svga_data}", svgaContent)
                     .replace("{file_Size}", fileSize);
         } catch (Exception e) {
             return null;

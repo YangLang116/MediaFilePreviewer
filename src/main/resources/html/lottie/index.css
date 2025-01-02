@@ -1,69 +1,85 @@
 body {
     width: 100vw;
     height: 100vh;
-    background-color: {body_color};
     overflow: hidden;
-}
-
-#root {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: -30px;
-    right: -30px;
-    overflow-x: hidden;
-    overflow-y: scroll;
+    background-color: {bg_color};
+    padding: 0;
+    margin: 0;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    padding: 20px 50px;
 }
 
-#canvas-wrap {
-    border-radius: 10px;
-    border: {main_color} solid 1px;
-}
-
-#canvas {
-    width: 0;
-    height: 0;
-    margin: 20px;
-}
-
-#controller {
+#opera-block {
     display: flex;
     flex-direction: row;
-    margin-top: 30px;
+    align-items: center;
+    margin-top: 10px;
+    margin-bottom: 10px;
 }
 
-.controller-item {
-    width: 110px;
-    height: 30px;
-    text-align: center;
-    line-height: 30px;
-    font-size: 16px;
-    color: {main_color};
-    border-radius: 20px;
-    border: {main_color} solid 1px;
-    margin: 0 10px;
+.spacer {
+    flex: 1;
+}
+
+.item {
+    width: 18px;
+    height: 18px;
+    margin-right: 10px;
+    border-radius: 5px;
+    border: 1px solid rgba(0, 200, 200, 0.6);
+}
+
+.info-item {
+    margin-right: 10px;
+    color: {font_color};
+    font-size: {text-size}px;
     user-select: none;
     -webkit-user-select: none;
 }
 
-#canvas-info-list {
-    margin-top: 30px;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    padding: 10px 0;
-    border-radius: 10px;
-    border: {main_color} solid 1px;
+#content {
+    flex: 1;
+    position: relative;
 }
 
-.canvas-info-list-item {
-    font-size: 14px;
-    color: {main_color};
-    line-height: 2;
-    list-style-type: none;
-    margin: 0 15px
+#canvas-container {
+    position: absolute;
+    left: 10px;
+    right: 10px;
+    top: 10px;
+    bottom: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+#canvas {
+    width: 300px;
+    height: 300px;
+}
+
+#color-black {
+    background-color: black;
+}
+
+#color-white {
+    background-color: white;
+}
+
+#color-blue {
+    background-color: #3498DB;
+}
+
+#color-green {
+    background-color: #30CC71;
+}
+
+#color-yellow {
+    background-color: #F1C40D;
+}
+
+#color-red {
+    background-color: #C0392B;
 }

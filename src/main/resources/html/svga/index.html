@@ -7,35 +7,36 @@
     <script>{script_placeholder}</script>
 </head>
 <body onload="onPageLoad()">
-<div id="root">
-    <div id="canvas"></div>
-    <div id="canvas-background">
-        <div id="canvas-background-tip">Select Background Color</div>
-        <div id="canvas-background-list">
-            <div class="canvas-background-list-item" id="color-black" onclick="switchColor(this)"></div>
-            <div class="canvas-background-list-item" id="color-white" onclick="switchColor(this)"></div>
-            <div class="canvas-background-list-item" id="color-blue" onclick="switchColor(this)"></div>
-            <div class="canvas-background-list-item" id="color-green" onclick="switchColor(this)"></div>
-            <div class="canvas-background-list-item" id="color-yellow" onclick="switchColor(this)"></div>
-            <div class="canvas-background-list-item" id="color-red" onclick="switchColor(this)"></div>
-        </div>
+<div id="opera-block">
+    <div class="spacer"></div>
+    <div id="more_info" onclick="showMoreInfo(this)">Dev: Off</div>
+    <div class="item" id="color-black" onclick="switchColor(this)"></div>
+    <div class="item" id="color-white" onclick="switchColor(this)"></div>
+    <div class="item" id="color-blue" onclick="switchColor(this)"></div>
+    <div class="item" id="color-green" onclick="switchColor(this)"></div>
+    <div class="item" id="color-yellow" onclick="switchColor(this)"></div>
+    <div class="item" id="color-red" onclick="switchColor(this)"></div>
+</div>
+<div id="content">
+    <div id="canvas-container">
+        <div id="canvas"></div>
     </div>
-    <div id="info">
-        <div id="canvas-info">
-            <div id="canvas-info-tip">File Info</div>
-            <ul id="canvas-info-list">
-                <li class="canvas-info-list-item" id="version_info">Version: -</li>
-                <li class="canvas-info-list-item" id="fps_info">FPS: -</li>
-                <li class="canvas-info-list-item" id="frame_info">Frames: -</li>
-                <li class="canvas-info-list-item" id="duration_info">Duration: -</li>
-                <li class="canvas-info-list-item" id="dimension_info">Dimension: -</li>
-                <li class="canvas-info-list-item" id="memory_info">Memory: -</li>
-                <li class="canvas-info-list-item" id="size_info">Size: {file_Size}</li>
+    <div id="info-container">
+        <div class="info-area">
+            <div class="info-title">File Info</div>
+            <ul class="info-list">
+                <li class="info-item" id="version_info">Version: -</li>
+                <li class="info-item" id="fps_info">FPS: -</li>
+                <li class="info-item" id="frame_info">Frames: -</li>
+                <li class="info-item" id="duration_info">Duration: -</li>
+                <li class="info-item" id="dimension_info">Dimension: -</li>
+                <li class="info-item" id="memory_info">Memory: -</li>
+                <li class="info-item" id="size_info">Size: {file_Size}</li>
             </ul>
         </div>
-        <div id="image-info">
-            <div id="image-info-tip">Images Info</div>
-            <ul id="image-info-list"></ul>
+        <div class="info-area">
+            <div class="info-title">Images Info</div>
+            <ul class="info-list" id="image-info-list"></ul>
         </div>
     </div>
 </div>
