@@ -107,7 +107,7 @@ public class SVGImageComponent extends ScalePanel {
             }
             // 加载图片
             ImageReadParam param = getReadParam(reader);
-            final BufferedImage image = ImageUtils.loadImage(reader, 0, param);
+            final BufferedImage image = ImageUtils.loadImage(reader, param, 0);
             // 刷新UI
             if (image == null) {
                 if (this.imageCache.isEmpty()) app.invokeLater(listener::onFail);
@@ -130,15 +130,10 @@ public class SVGImageComponent extends ScalePanel {
         g.fillRect(0, 0, getWidth(), getHeight());
         BufferedImage imageToDraw = this.imageCache.find(scale);
         if (imageToDraw == null) return;
-        // 设置高质量渲染
-        Graphics2D g2d = (Graphics2D) g;
-        g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
-        g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
-        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        // 居中绘制
+        ImageUtils.updateGraphicsHint((Graphics2D) g, false);
         Rectangle srcRect = new Rectangle(0, 0, imageToDraw.getWidth(), imageToDraw.getHeight());
         Rectangle dstRect = new Rectangle((getWidth() - imageToDraw.getWidth()) / 2, (getHeight() - imageToDraw.getHeight()) / 2, imageToDraw.getWidth(), imageToDraw.getHeight());
-        StartupUiUtil.drawImage(g2d, imageToDraw, dstRect, srcRect, null);
+        StartupUiUtil.drawImage(g, imageToDraw, dstRect, srcRect, null);
     }
 
     public void dispose() {

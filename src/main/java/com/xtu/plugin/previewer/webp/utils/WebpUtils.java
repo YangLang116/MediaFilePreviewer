@@ -8,7 +8,7 @@ import java.util.List;
 
 public class WebpUtils {
 
-    public static Dimension getPicSize(@NotNull List<MFAnimationFrame> frameList) {
+    public static Dimension getImgSize(@NotNull List<MFAnimationFrame> frameList) {
         int width = 0;
         int height = 0;
         for (MFAnimationFrame frame : frameList) {
