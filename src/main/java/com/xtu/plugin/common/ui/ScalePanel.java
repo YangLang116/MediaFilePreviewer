@@ -8,6 +8,8 @@ import java.awt.event.MouseWheelEvent;
 
 public abstract class ScalePanel extends JPanel {
 
+    private static final float MIN_SCALE_DIFFERENCE = 0.05f;
+
     protected float scale = 1.0f;
 
     public ScalePanel() {
@@ -18,12 +20,10 @@ public abstract class ScalePanel extends JPanel {
         addMouseWheelListener(e -> {
             int modifiers = SystemInfo.isMac ? InputEvent.META_DOWN_MASK : InputEvent.CTRL_DOWN_MASK;
             if (e.getScrollType() == MouseWheelEvent.WHEEL_UNIT_SCROLL && (e.getModifiersEx() & modifiers) != 0) {
-                float newValue = this.scale - e.getUnitsToScroll() * 0.1f;
-                newValue = Math.min(Math.max(0.1f, newValue), 10);
-                if (newValue != this.scale) {
-                    this.scale = newValue;
-                    onScaleChanged();
-                }
+                float delta = e.getUnitsToScroll() * 0.1f;
+                if (Math.abs(delta) < MIN_SCALE_DIFFERENCE) return;
+                this.scale = Math.min(Math.max(0.1f, this.scale - delta), 10);
+                onScaleChanged();
             }
         });
         requestFocus();

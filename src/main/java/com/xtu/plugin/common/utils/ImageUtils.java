@@ -37,7 +37,8 @@ public class ImageUtils {
         }
     }
 
-    public static void dispose(@NotNull ImageReader reader) {
+    public static void dispose(@Nullable ImageReader reader) {
+        if (reader == null) return;
         Object readerInput = reader.getInput();
         if (readerInput instanceof Closeable) {
             CloseUtils.close((Closeable) readerInput);
