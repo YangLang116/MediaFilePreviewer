@@ -15,12 +15,12 @@ repositories {
 }
 
 dependencies {
-    implementation("org.json:json:20240303")
-    implementation("org.apache.xmlgraphics", "batik-all", "1.17") {
+    implementation("org.json:json:20250517")
+    implementation("org.apache.xmlgraphics", "batik-all", "1.19") {
         exclude("xml-apis", "xml-apis")
     }
-    implementation("com.twelvemonkeys.imageio", "imageio-webp", "3.10.1")
-    implementation("com.twelvemonkeys.imageio", "imageio-batik", "3.10.1")
+    implementation("com.twelvemonkeys.imageio", "imageio-webp", "3.12.0")
+    implementation("com.twelvemonkeys.imageio", "imageio-batik", "3.12.0")
     intellijPlatform {
         create(providers.gradleProperty("platformType"), providers.gradleProperty("platformVersion"))
         bundledPlugins(providers.gradleProperty("platformBundledPlugins").map { it.split(',') })
