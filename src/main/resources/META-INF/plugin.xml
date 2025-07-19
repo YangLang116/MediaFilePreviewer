@@ -4,7 +4,6 @@
     <vendor email="yanglang116@gmail.com">yanglang116@gmail.com</vendor>
     <idea-version since-build="251"/>
     <depends>com.intellij.modules.platform</depends>
-    <depends>com.intellij.javafx</depends>
     <extensions defaultExtensionNs="com.intellij">
         <!--error report-->
         <errorHandler implementation="com.xtu.plugin.reporter.PreviewErrorReporter"/>

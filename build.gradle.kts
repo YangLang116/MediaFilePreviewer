@@ -95,6 +95,9 @@ intellijPlatformTesting {
             prepareSandboxTask {
                 sandboxDirectory = project.layout.buildDirectory.dir("sandbox-as")
             }
+            task {
+                runtimeDirectory = project.layout.projectDirectory.dir("runtime/jbr_jcef-21.0.7-windows-x64-b1020.35")
+            }
         }
     }
 }

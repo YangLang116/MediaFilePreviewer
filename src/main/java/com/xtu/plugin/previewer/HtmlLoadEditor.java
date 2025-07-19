@@ -5,40 +5,29 @@ import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.ui.JBColor;
-import com.intellij.ui.jcef.JBCefApp;
 import com.intellij.ui.jcef.JBCefBrowser;
 import com.intellij.util.messages.MessageBus;
-import com.xtu.plugin.common.ui.FxHtmlLoader;
 import com.xtu.plugin.common.utils.ColorUtils;
 import com.xtu.plugin.common.utils.FileUtils;
-import com.xtu.plugin.common.utils.LogUtils;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 
 public abstract class HtmlLoadEditor extends MediaFileEditor<JComponent> {
 
-    private JBCefBrowser jcefBrowser;
-    private FxHtmlLoader htmlLoader;
+    private JBCefBrowser browser;
 
     public HtmlLoadEditor(@NotNull Project project,
                           @NotNull String editorName,
                           @NotNull VirtualFile file) {
         super(editorName, file);
-        setComponent(createBrowser());
+        initBrowser();
         refreshUI(project, file);
     }
 
-    private JComponent createBrowser() {
-        boolean supportJCEF = JBCefApp.isSupported();
-        LogUtils.info("BaseFileEditor supportJCEF: " + supportJCEF);
-        if (supportJCEF) {
-            this.jcefBrowser = new JBCefBrowser();
-            return this.jcefBrowser.getComponent();
-        } else {
-            this.htmlLoader = new FxHtmlLoader();
-            return this.htmlLoader.getComponent();
-        }
+    private void initBrowser() {
+        this.browser = new JBCefBrowser();
+        setComponent(this.browser.getComponent());
     }
 
     private void refreshUI(@NotNull Project project, @NotNull VirtualFile file) {
@@ -50,13 +39,8 @@ public abstract class HtmlLoadEditor extends MediaFileEditor<JComponent> {
     public abstract void load(@NotNull Project project, @NotNull VirtualFile file);
 
     public void setHtml(@NotNull String htmlContent) {
-        if (this.jcefBrowser != null) {
-            this.jcefBrowser.getComponent().setBackground(JBColor.background());
-            this.jcefBrowser.loadHTML(htmlContent);
-        } else {
-            this.htmlLoader.setBackground(JBColor.background());
-            this.htmlLoader.setHtml(htmlContent);
-        }
+        this.browser.getComponent().setBackground(JBColor.background());
+        this.browser.loadHTML(htmlContent);
     }
 
     public void showErrorTip(@NotNull String errorInfo) {
@@ -69,10 +53,6 @@ public abstract class HtmlLoadEditor extends MediaFileEditor<JComponent> {
 
     @Override
     public void dispose() {
-        if (this.jcefBrowser != null) {
-            this.jcefBrowser.dispose();
-        } else {
-            this.htmlLoader.dispose();
-        }
+        this.browser.dispose();
     }
 }
