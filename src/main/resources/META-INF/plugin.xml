@@ -2,7 +2,7 @@
     <id>com.xtu.plugins.reviewer</id>
     <name>MediaFilePreviewer</name>
     <vendor email="yanglang116@gmail.com">yanglang116@gmail.com</vendor>
-    <idea-version since-build="211"/>
+    <idea-version since-build="251"/>
     <depends>com.intellij.modules.platform</depends>
     <depends>com.intellij.javafx</depends>
     <extensions defaultExtensionNs="com.intellij">
